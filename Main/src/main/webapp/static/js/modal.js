@@ -45,7 +45,7 @@ submitButtons.forEach(function(submitBtn) {
     submitBtn.onclick = function(event) {
         event.preventDefault();
         alert('추가가 완료되었습니다.');
-        //this.closest(".modal").style.display = "none";
+        this.closest(".modal").style.display = "none";
         
     //var dataInput = document.getElementById('dataInput').value;
 

@@ -135,16 +135,20 @@
 }
 /* 수량과 금액 정보를 포함하는 섹션 */
 .order-info {
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.order-quantity, .order-amount {
+    border-bottom: 1px solid #000; /* 밑줄 스타일 */
+    padding-bottom: 3px; /* 밑줄과 텍스트 사이의 여백 */
 }
 
 .order-button {
     padding: 10px 20px;
-    background-color: #000; /* 배경색: 검정 */
-    color: #fff; /* 텍스트 색상: 흰색 */
-    text-align: center;
-    cursor: pointer; /* 커서를 포인터로 변경 */
-     border: none; /* 테두리 제거 */
+    background-color: #000; /* 버튼 배경색: 검정 */
+    color: #fff; /* 버튼 텍스트 색상: 흰색 */
+    cursor: pointer; /* 커서 스타일: 포인터 */
+    border: none; /* 테두리 제거 */
 }
 
 .footer2 {

@@ -18,18 +18,17 @@
 
 <!-- 모달을 여는 버튼 -->
 <button class="openModalBtn" data-target="myModal">
-	<img src="static/img/noodle.jpg" alt="food_img1">
-	<p>냉면</p>
-	<p>8,500원</p>
+	<img src="static/img/coke.jpg" alt="coke_img">
+	<p>콜라</p>
+	<p>2,000원</p>
 </button>
 
 <!-- 모달 구조 -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="closeBtn">&times;</span>
-        <p>이곳에 모달 내용이 표시됩니다!</p>
+        <p>시원한 콜라입니다.</p>
         <hr>
-        <p>모달 냉면 내용.</p>
         <!-- 여러 줄의 내용이 여기에 추가될 수 있습니다 -->
         <button class="submit">추가하기</button>
     </div>
@@ -37,9 +36,9 @@
 
 <!-- 모달을 여는 두 번째 버튼 -->
 <button class="openModalBtn" data-target="myModal">
-	<img src="static/img/spicy_noodle.jpg" alt="food_img2">
-	<p>비빔 냉면</p>
-	<p>9,500원</p>
+	<img src="static/img/sprite.jpg" alt="sprite_img">
+	<p>스프라이트</p>
+	<p>2,000원</p>
 </button>
 
 
@@ -47,9 +46,8 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="closeBtn">&times;</span>
-        <p>이곳에 모달 내용이 표시됩니다!</p>
+        <p>시원한 스프라이트입니다.</p>
         <hr>
-        <p>비빔 냉면 내용.</p>
         <!-- 내용 추가 -->
         <button class="submit">추가하기</button>
     </div>
@@ -57,9 +55,9 @@
 
 <!-- 모달을 여는 세 번째 버튼 -->
 <button class="openModalBtn" data-target="myModal">
-	<img src="static/img/southKorea_noodle.jpg" alt="food_img3">
-	<p>평양 냉면</p>
-	<p>9,500원</p>
+	<img src="static/img/soju.jpg" alt="soju_img">
+	<p>소주</p>
+	<p>5,000원</p>
 </button>
 
 
@@ -67,13 +65,32 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="closeBtn">&times;</span>
-        <p>이곳에 모달 내용이 표시됩니다!</p>
+        <p>시원한 소주입니다.</p>
         <hr>
-        <p>세번째 평양 냉면 내용.</p>
         <!-- 내용 추가 -->
         <button class="submit">추가하기</button>
     </div>
 </div>
+
+<!-- 모달을 여는 네 번째 버튼 -->
+<button class="openModalBtn" data-target="myModal">
+	<img src="static/img/cass.jpg" alt="cass_img">
+	<p>맥주</p>
+	<p>5,000원</p>
+</button>
+
+
+<!-- 네 번째 모달 구조 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <p>시원한 맥주입니다.</p>
+        <hr>
+        <!-- 내용 추가 -->
+        <button class="submit">추가하기</button>
+    </div>
+</div>
+
 <script src="static/js/modal.js"></script> <!-- JavaScript 파일 참조 -->
 
 </body>
