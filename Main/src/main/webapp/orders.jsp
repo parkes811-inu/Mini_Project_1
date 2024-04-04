@@ -46,11 +46,11 @@
     <button class="btn black">카드</button>
     <button class="btn black">현금</button>
     <button class="btn black">포인트 사용</button>
-    <button class="btn black">결제 취소</button>
+	<button id="cancelButton" class="btn black">결제 취소</button>
   </div>
 </div>
 
 	<a href="modal_menu.jsp">시~발</a>
-	
+	<script src="static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
 </body>
 </html>
