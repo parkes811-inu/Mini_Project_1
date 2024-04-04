@@ -43,12 +43,15 @@ document.getElementById('pointButton').addEventListener('click', function() {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "checkUserPoints.jsp", true); // 서버의 URL로 POST 요청을 전송합니다.
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("phoneNum=" + phoneNumValue);
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // 서버 응답 처리
                 var availablePoints = parseInt(this.responseText, 10); // 가정: 서버가 포인트를 문자열로 반환한다고 가정
                 
                 if (availablePoints === -1) { // 번호가 데이터베이스에 없는 경우
+                	// totalAmount는 데이터 베이스에서 전화번호로 조회해서 끌고 와야함.
+                	// 2024-04-05 박은서 해야됨.
                     var totalAmount = 100000;
                     var pointsToAdd = totalAmount * 0.1;
 
@@ -60,32 +63,34 @@ document.getElementById('pointButton').addEventListener('click', function() {
                             alert('새로운 번호로 포인트가 추가되었습니다.');
                         }
                     };
-                    xhrAdd.send("phoneNum=" + phoneNumValue + "&pointsToAdd=" + pointsToAdd);
+                	xhrAdd.send("phoneNum=" + phoneNumValue + "&pointsToAdd=" + pointsToAdd);
                 }
-			  	
-			  	// 사용할 포인트 입력받음
-                var pointsToUse = parseInt(prompt('사용할 포인트를 입력해주세요. 현재 포인트: ' + availablePoints), 10);
-                // 입력한 포인트가 현재 가지고 있는 것보다 크면 오류 메시지 표시
-                if (pointsToUse > availablePoints) {
-                    alert('사용할 수 있는 포인트보다 많습니다.');
-                } 
-       
+                // 번호가 이미 존재 하는 경우
                 else {
-                    // 포인트를 차감하고 서버에 업데이트 요청
-                    var xhrUpdate = new XMLHttpRequest();
-                    xhrUpdate.open("POST", "updateUserPoints.jsp", true);
-                    xhrUpdate.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhrUpdate.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status == 200) {
-                            alert('포인트가 성공적으로 차감되었습니다.');
-                            // 이곳에서 추가 로직을 수행할 수 있습니다.
-                        }
-                    };
-                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);
-                }
+					// 사용할 포인트 입력받음
+	                var pointsToUse = parseInt(prompt('사용할 포인트를 입력해주세요. 현재 포인트: ' + availablePoints), 10);
+	                // 입력한 포인트가 현재 가지고 있는 것보다 크면 오류 메시지 표시
+	                if (pointsToUse > availablePoints || pointsToUse < 0) {
+	                    alert('사용할 수 있는 포인트보다 많거나 적습니다.');
+	                } 
+	       
+	                else {
+	                    // 포인트를 차감하고 서버에 업데이트 요청
+	                    var xhrUpdate = new XMLHttpRequest();
+	                    xhrUpdate.open("POST", "updateUserPoints.jsp", true);
+	                    xhrUpdate.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	                    xhrUpdate.onreadystatechange = function() {
+	                        if (this.readyState == 4 && this.status == 200) {
+	                            alert('포인트가 성공적으로 차감되었습니다.');
+	                            // 이곳에서 추가 로직을 수행할 수 있습니다.
+	                        }
+	                    };
+	                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + toString(pointsToUse));
+	                }
+				}
             }
         };
-        xhr.send("phoneNum=" + phoneNumValue);
+        
     }
 });
 
