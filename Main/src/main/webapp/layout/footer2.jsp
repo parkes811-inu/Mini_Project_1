@@ -17,7 +17,7 @@
 	        <br>
 	        <p>금액: <span class="order-amount">      <%= price %>     </span>     원</p>
 	    </div>
-	    <a href="cart/orders.jsp" class="order-button">주문하기</a>
+	    <a href="orders.jsp" class="order-button">주문하기</a>
 	</div>
 </footer>
 

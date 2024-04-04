@@ -79,11 +79,19 @@
 /* ======================================================================== */
 /* 사용설명서 이미지 파일 CSS */
 .info {
-    display: flex;
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: bottom; /* 수직 중앙 정렬 */
-    height: 80vh; /* 부모 요소의 높이를 뷰포트의 100%로 설정 */
+    text-align: center; /* 내용을 수평 중앙 정렬합니다. */
 }
+
+.info h1 {
+    margin-top: 0; /* 위쪽 마진을 제거하여 페이지 맨 위로 이동합니다. */
+    padding-top: 30px !important;  /* 페이지 맨 위와 조금 떨어지게 패딩을 추가합니다. */	
+}
+
+.info img {
+    display: block; /* 이미지를 블록 요소로 만들어 줄 바꿈이 생기게 합니다. */
+    margin: 20px auto; /* 이미지를 수평 중앙에 위치시킵니다. */
+}
+
 /* ======================================================================== */
 
 /* footer */
@@ -209,8 +217,8 @@
 
 /* 나머지 콘텐츠가 네비게이션 바 아래에 올 수 있도록 충분한 상단 패딩을 추가합니다. */
 body {
-    padding-top: 120px; /* `main-header`와 `.header-nav` 높이의 합에 맞춰 조정
-} */
+    padding-top: 120px; /* `main-header`와 `.header-nav` 높이의 합에 맞춰 조정*/
+}
 @media (min-width: 768px) {
     .header-nav .header-nav-item:not(:first-child):before {
         content: '|';
@@ -219,3 +227,100 @@ body {
     }
 }
 /* ======================================================================== */
+/* 결제 페이지 css */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 300px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.title, .subtitle {
+  text-align: center;
+}
+
+.order-details {
+  border: 1px solid #e0e0e0;
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.order-header, .order-item, .total-amount {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.total-amount {
+  font-weight: bold;
+}
+
+.buttons button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+  background: black;
+  cursor: pointer;
+}
+
+.buttons .outline {
+  background: transparent;
+  border: 1px solid black;
+  color: black;
+}
+
+.buttons .black {
+  background: black;
+}
+/* ======================================================================== */
+/* 장바구니 CSS */
+.menu-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 250px; /* 카드의 너비를 설정합니다. */
+  margin: auto; /* 카드를 페이지 중앙에 배치합니다. */
+}
+
+.title {
+  text-align: center;
+  margin-top: 0;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px; /* 서브타이틀과 메뉴 아이템 사이의 여백 */
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+  margin-bottom: 10px; /* 메뉴 아이템 간의 여백 */
+}
+
+.menu-item img {
+  width: 50px; /* 이미지의 크기를 설정합니다. */
+  height: 50px; /* 이미지의 크기를 설정합니다. */
+  margin-left: 10px; /* 이미지와 텍스트 사이의 여백을 설정합니다. */
+  border-radius: 5px; /* 이미지의 모서리를 둥글게 처리합니다. */
+}
+
+.menu-description h3 {
+  margin: 0;
+  font-size: 1em; /* 헤드라인 텍스트의 크기를 설정합니다. */
+}
+
+.menu-description p {
+  margin: 0;
+  color: #555;
+}
+
+/* ======================================================================== */
+

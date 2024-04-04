@@ -14,7 +14,7 @@
             <img src="static/img/home.png" alt="Home" class="footer-icon">
             <span>홈</span>
         </a>
-        <a href="cart/orders.jsp" class="footer-link">
+        <a href="basket.jsp" class="footer-link">
             <img src="static/img/basket.png" alt="Orders" class="footer-icon">
             <span>장바구니</span>
         </a>

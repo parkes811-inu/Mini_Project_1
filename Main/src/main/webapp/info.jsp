@@ -12,7 +12,9 @@
 <title>사용 안내서</title>
 </head>
 <body>
+
 	<div class="info">
+		<h1 style="padding-top: 30px;">QR 주문 소개</h1>
 		<img alt="info" src="static/img/info.png" >
 	</div>
 
