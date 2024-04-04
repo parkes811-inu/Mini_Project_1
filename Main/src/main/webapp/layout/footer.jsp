@@ -4,18 +4,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<footer>
-	<div class="f_info">
-    	<a href="modal.jsp" class="f_info">홈</a>
-	</div>
-	
-	<div class="f_order">
-    	<a href="info.jsp" class="footer-button">사용안내</a>
-	</div>
-	
-	<div class="f_basket">
-    	<a href="basket.jsp" class="footer-button">장바구니</a>
-	</div>
+<footer class="footer">
+    <nav class="footer-nav">
+        <a href="info.jsp" class="footer-link">
+            <img src="static/img/logo_info.png" alt="Favorites" class="footer-icon">
+            <span>사용안내</span>
+        </a>
+        <a href="modal_menu.jsp" class="footer-link">
+            <img src="static/img/home.png" alt="Home" class="footer-icon">
+            <span>홈</span>
+        </a>
+        <a href="cart/orders.jsp" class="footer-link">
+            <img src="static/img/basket.png" alt="Orders" class="footer-icon">
+            <span>장바구니</span>
+        </a>
+    </nav>
 </footer>
-
-

@@ -2,8 +2,9 @@
 메인 메뉴 화면 및 메뉴 클릭 시 모달 팝업 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="layout/footer.jsp" %>
 <%@ include file="layout/header.jsp" %>
+<%@ include file="layout/footer.jsp" %>
+<%@ include file="layout/footer2.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,27 +17,41 @@
 <body>
 
 <!-- 모달을 여는 버튼 -->
-<button id="openModalBtn">
-	<!-- 데이터베이스에서 사진 URL을 불러와 표현해야 함. -->
-	<!-- 나중에 해야할 것 -->
-	<!-- 음식 사진을 아무거나 넣고 진행해주세요. -->
-	<img src="pizza.png" alt="food_img1">
-	
-	
+<button class="openModalBtn" data-target="myModal">
+	<img src="static/img/noodle.jpg" alt="food_img1">
+	<p>냉면</p>
+	<p>8,500원</p>
 </button>
 
 <!-- 모달 구조 -->
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="closeBtn">&times;</span>
-        <!-- 반예진 : 버튼을 눌렀을 때, 홍콩반점 화면을 참고해서 작성 -->
         <p>이곳에 모달 내용이 표시됩니다!</p>
         <hr>
-        <p>안녕하세요.</p>
-        
-        <br> <br> <br> <br>
-        
-        <button type="submit" id="submit">추가하기</button>
+        <p>모달 냉면 내용.</p>
+        <!-- 여러 줄의 내용이 여기에 추가될 수 있습니다 -->
+        <button class="submit">추가하기</button>
+    </div>
+</div>
+
+<!-- 모달을 여는 두 번째 버튼 -->
+<button class="openModalBtn" data-target="myModal">
+	<img src="static/img/noodle.jpg" alt="food_img2">
+	<p>비빔 냉면</p>
+	<p>9,500원</p>
+</button>
+
+
+<!-- 두 번째 모달 구조 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="closeBtn">&times;</span>
+        <p>이곳에 모달 내용이 표시됩니다!</p>
+        <hr>
+        <p>비빔 냉면 내용.</p>
+        <!-- 내용 추가 -->
+        <button class="submit">추가하기</button>
     </div>
 </div>
 
