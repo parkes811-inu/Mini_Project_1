@@ -40,12 +40,12 @@
     </div>
   </div>
   <div class="point">
-   		<input type="text" placeholder="포인트 적립 번호" />
+   		<input type="text" id="phoneNum" placeholder="포인트 적립 번호" />
     </div>
   <div class="buttons">
-    <button class="btn black">카드</button>
-    <button class="btn black">현금</button>
-    <button class="btn black">포인트 사용</button>
+    <button id="cardButton" class="btn black">카드</button>
+    <button id="cashButton" class="btn black">현금</button>
+    <button id="pointButton" class="btn black">포인트 사용</button>
 	<button id="cancelButton" class="btn black">결제 취소</button>
   </div>
 </div>

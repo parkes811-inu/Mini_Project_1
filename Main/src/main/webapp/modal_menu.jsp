@@ -48,6 +48,7 @@
     <div class="modal-content">
         <span class="closeBtn">&times;</span>
         <p>이곳에 모달 내용이 표시됩니다!</p>
+        <p>이곳에 모달 내용이 표시됩니다!</p>
         <hr>
         <p>비빔 냉면 내용.</p>
         <!-- 내용 추가 -->
@@ -69,6 +70,7 @@
         <span class="closeBtn">&times;</span>
         <p>이곳에 모달 내용이 표시됩니다!</p>
         <hr>
+        <p>시~ㅂ말</p>
         <p>세번째 평양 냉면 내용.</p>
         <!-- 내용 추가 -->
         <button class="submit">추가하기</button>
