@@ -72,6 +72,8 @@ document.getElementById('pointButton').addEventListener('click', function() {
                 else {
 					// 사용할 포인트 입력받음
 	                var pointsToUse = prompt('사용할 포인트를 입력해주세요. 현재 포인트: ' + availablePoints);
+	                // 공백 제거
+	                pointsToUse = pointsToUse.trim();
 	                // 입력한 포인트가 현재 가지고 있는 것보다 크면 오류 메시지 표시
 	                if (pointsToUse > availablePoints || pointsToUse < 0 || pointsToUse === "") {
 	                    alert('올바른 포인트를 적어주세요.');
@@ -84,12 +86,13 @@ document.getElementById('pointButton').addEventListener('click', function() {
 	                    xhrUpdate.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	                    xhrUpdate.onreadystatechange = function() {
 	                        if (this.readyState == 4 && this.status == 200) {
-	                            alert('포인트가 성공적으로 차감되었습니다.');
+	                            // alert('포인트가 성공적으로 차감되었습니다.');
 	                            // 포인트가 차감된 거 만큼 결제를 진행 
-	                            alert(parseInt(this.responseText, 10));
-	                            
+	                            // alert(parseInt(this.responseText, 10));
+	                            alert('시1ㅏㅂㄹ');
 	                            // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-	                            
+                              	window.location.href = 'modal_menu.jsp';
+								alert('시1ㅏㅂㄹ123');
 	                        }
 	                    };
 	                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);

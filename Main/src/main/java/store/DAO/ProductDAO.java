@@ -51,7 +51,9 @@ public class ProductDAO extends JDBConnection {
 	 */
 	public ArrayList<Product> getAllProducts(String category) throws SQLException {
 	    ArrayList<Product> products = new ArrayList<>();
-	    String sql = "SELECT * FROM product WHERE category = ?";
+	    String sql = "SELECT * "
+	    			+ " FROM product "
+	    			+ " WHERE category = ? ";
 
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -68,6 +70,7 @@ public class ProductDAO extends JDBConnection {
 	            product.setPrice(rs.getInt("price"));
 	            product.setDescription(rs.getString("description"));
 	            product.setImagePath(rs.getString("image_path"));
+	            
 	            products.add(product);
 	        }
 	    } catch (SQLException e) {
@@ -76,7 +79,6 @@ public class ProductDAO extends JDBConnection {
 	    } finally {
 	        if (rs != null) try { rs.close(); } catch (SQLException e) {}
 	        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) {}
-	        // 데이터베이스 연결을 여기서 닫지 않는 것이 좋습니다. 연결 관리는 다른 곳에서 처리.
 	    }
 
 	    return products;

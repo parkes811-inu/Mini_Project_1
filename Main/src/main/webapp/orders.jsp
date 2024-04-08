@@ -53,7 +53,6 @@
   </div>
 </div>
 
-	<!--  <a href="modal_menu.jsp">시~발</a>-->
 	<script src="static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
 </body>
 </html>

@@ -22,24 +22,25 @@
 </head>
 <body>
 <%
-ArrayList<Product> productList = new ArrayList<>();
-String category = "메인";
-
-ProductDAO productDao = new ProductDAO(); // ProductDAO 인스턴스 생성
-try {
-    productList = productDao.getAllProducts(category); // 모든 제품 정보를 조회
-} catch(Exception e) {
-    e.printStackTrace();
-}
+	ArrayList<Product> productList = new ArrayList<>();
+	String category = "메인";
+	
+	ProductDAO productDao = new ProductDAO(); // ProductDAO 인스턴스 생성
+	try {
+	    productList = productDao.getAllProducts(category); // 모든 제품 정보를 조회
+	} catch(Exception e) {
+	    e.printStackTrace();
+	}
 %>
 <!-- 모달을 여는 버튼 -->
 <div>
 	<c:forEach var="product" items="<%= productList %>">
-		<div class="product-item" id="${ product.productId }">
+		<div class="product-item" id="${ product.productId }" 
+			data-description="${product.description}" data-price="${ product.price }">
 			<input type="hidden" name="count" value="${ product.count }" />
 	   		<img src="<%= request.getContextPath() %>${ product.imagePath }" alt="food_img1">
 			<h4>${ product.name }</h4>
-			<h4>${ product.price }</h4>
+			<h4>${ product.price } 원</h4>
 		</div>
    	</c:forEach>
 </div>
@@ -55,21 +56,21 @@ try {
 	    <div class="modal-body">
 	    <div class="menu">
 	    	<div id="detail-img-box">
-	    		
+	    		<img src="< % = request.getContextPath() %>${ product.imagePath }" alt="food_img1" class="room_img">
 	    	</div>
-             <img src="<%= request.getContextPath() %>${ product.imagePath }" alt="food_img1" class="room_img"> 
-
             <h4 id="product-detail-name"></h4>
             <h4 id="product-detail-price"></h4>
+            <h6 id="product-dsecription"></h6>
             <button type="button" id="detail-minus">-</button>
-            <input type="number" name="" value="0" id="detail-count" />
+            <input type="text" name="" value="1" id="detail-count" onkeydown="return false;">
             <button type="button" id="detail-plus">+</button>
+            
 	    </div>
 	    </div>
-	    <div class="modal-footer">
-    <div class="pop-btn confirm" id="cancel">취소하기</div>
-    <div class="pop-btn confirm" id="confirm">추가하기</div>
-	</div>
+	    	<div class="modal-footer">
+			<div class="pop-btn confirm" id="cancel">취소하기</div>
+			<div class="pop-btn confirm" id="confirm">추가하기</div>
+			</div>
 	  </div>
 	</div>
 <jsp:include page="/static/js/script.jsp" />
