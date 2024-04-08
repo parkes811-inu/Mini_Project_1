@@ -291,16 +291,13 @@ html, body, .container, .row, .col-md-4 {
 			<div class="collapse navbar-collapse" id="navbarToggler">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">매출
-							관리</button>
+						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">매출 관리</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">메뉴
-							추가</button>
+						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">메뉴 추가</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3" type="button">주문
-							취소</button>
+						<button class="btn btn-lg btn-dark ms-3" type="button">주문 취소</button>
 					</li>
 				</ul>
 			</div>
@@ -322,16 +319,20 @@ html, body, .container, .row, .col-md-4 {
 								<div class="card-body">
 									<c:set var="totalPrice" value="0" />
 									<c:forEach var="order" items="${ table.value }">
+									<%-- 주문 상태가 'pay ok'인 경우에만 화면에 표시 --%>
+									<c:if test="${ order.status eq 'pay ok' }">
 										<div style="display: flex; justify-content: space-between;">
 											<p class="card-text text-dark">${ order.menu_name }</p>
 											<p class="card-text text-dark">
 												<fmt:formatNumber value="${ order.price }" type="currency" currencyCode="KRW"/>
 											</p>
 										</div>
+									
 <!-- 										<p class="card-text text-dark">내용을 여기에 넣으세요.</p> -->
 										<p style="display: none">
 											${ totalPrice = Integer.parseInt(totalPrice) + order.price }
 										</p>
+									</c:if>
 									</c:forEach>						
 								</div>
 								<div class="card-footer card-footer-custom">
@@ -339,7 +340,7 @@ html, body, .container, .row, .col-md-4 {
 									<p class="text-dark mb-0 mr-auto">
 										<fmt:formatNumber value="${ totalPrice }" type="currency" currencyCode="KRW"/>
 									</p>
-									<button class="btn btn-dark btn-custom">삭제</button>
+									<button class="btn btn-dark btn-custom">완료</button>
 								</div>
 							</div>
 							<!-- 내부 카드 끝 -->

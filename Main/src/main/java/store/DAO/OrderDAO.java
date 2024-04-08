@@ -42,6 +42,8 @@ public class OrderDAO extends JDBConnection {
 				order.setMenu_name(rs.getString("menu_name"));
 				order.setAmount(rs.getInt("amount"));
 				order.setPrice(rs.getInt("price"));
+				order.setStatus(rs.getString("status"));
+				
 				//order.setOrder_date(rs.getDate("order_date"));
 
 				// 목록에 추가
@@ -83,7 +85,7 @@ public Order select(int no) {
 				order.setMenu_name( rs.getString("menu_name") );
 				order.setAmount( rs.getInt("amount"));
 				order.setPrice( rs.getInt("price") );
-				
+				order.setStatus(rs.getString("status"));
 			}
 		} catch(SQLException e) {
 			System.err.println("게시글 조회 시, 예외 발생");
