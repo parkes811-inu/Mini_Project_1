@@ -1,3 +1,6 @@
+<!-- 2024.04.05 박은서
+	주문하기 버튼 클릭시 나오는 결제 화면 jsp
+ -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -50,7 +53,7 @@
   </div>
 </div>
 
-	<a href="modal_menu.jsp">시~발</a>
+	<!--  <a href="modal_menu.jsp">시~발</a>-->
 	<script src="static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
 </body>
 </html>

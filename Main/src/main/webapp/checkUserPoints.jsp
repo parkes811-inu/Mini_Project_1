@@ -18,17 +18,13 @@
     // UserDTO 객체 생성 및 전화번호 설정
     Users user = new Users();
     user.setPhone(phoneNum);
-    user.getPoint();
     
     // 포인트 조회
-    user = userDao.login(user); // UserDAO에 이 메소드가 정의되어 있음
+    user = userDao.check(user); // UserDAO에 이 메소드가 정의되어 있음, 메소드 이름은 조회 기능에 맞게 수정될 필요가 있음
     
     // 조회 결과가 null이 아닌 경우 사용자 포인트 반환, null인 경우 -1 반환
-    String points = (user != null) ? user.getPoint() : "-1";
+    int points = (user != null) ? user.getPoint() : -1;
     
     // 포인트(또는 -1) 출력
     out.print(points);
-%>
- { conn.close(); } catch(SQLException ex) {}
-	}
 %>

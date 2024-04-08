@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 	// 추가된 수량 만큼 
-	String amount = "100";
+	String amount = "10"; // 실제 db에서 조회하고 싶어용.
 	String price = "10000";
 %>
 <footer class="footer2">
