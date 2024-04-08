@@ -1,7 +1,7 @@
 package store.Service;
 
 import java.util.List;
-import shop.DTO.Board;
+import store.DTO.Board;
 
 /**
  * 게시판 프로그램의 인터페이스

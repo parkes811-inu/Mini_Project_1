@@ -1,4 +1,4 @@
-package shop.Service;
+package store.Service;
 
 import java.util.List;
 
