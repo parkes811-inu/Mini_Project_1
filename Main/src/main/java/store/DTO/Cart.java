@@ -10,6 +10,7 @@ public class Cart {
 	private String productName;
 	private int amount;
 	private int price;
+	private String imagePath;
 	
 	// 기본 생성자
 	public Cart() {
@@ -55,6 +56,13 @@ public class Cart {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	// ====================================================================================
 	// toString()

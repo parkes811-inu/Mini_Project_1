@@ -10,21 +10,13 @@
 </html>
 <%
     // 요청 파라미터에서 상품 정보 추출
-    String productId = request.getParameter("productId");
+	int tableNum = Integer.parseInt(request.getParameter("tableNum"));
 	String productName = request.getParameter("productName");
-    int count = Integer.parseInt(request.getParameter("count"));
-    int price = Integer.parseInt(request.getParameter("price"));
+    int quantity = Integer.parseInt(request.getParameter("quantity"));
+	
+    // 상품 정보를 토대로 업데이트 진행
+    int isSuccess = CartDAO.updateCartItemQuantityAndPrice(tableNum, productName);
     
-    // Cart 객체 생성 및 값 설정
-    Cart cartItem = new Cart();
-    cartItem.setProductName(productName);
-    cartItem.setAmount(count);
-    cartItem.setPrice(price);
-
-    // 장바구니 항목을 데이터베이스에 추가
-    CartDAO cartDao = new CartDAO();
-    int isSuccess = cartDao.addToCart(cartItem);
-
     // 결과에 따라 응답 설정
     response.setContentType("text/plain");
     response.setCharacterEncoding("UTF-8");

@@ -1,3 +1,5 @@
+<%@page import="store.DTO.Cart"%>
+<%@page import="store.DAO.CartDAO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
@@ -6,8 +8,13 @@
     pageEncoding="UTF-8"%>
 <%
 	// 추가된 수량 만큼 
-	String amount = "10"; // 실제 db에서 조회하고 싶어용.
-	String price = "10000";
+	CartDAO cartDao = new CartDAO();
+	Cart cart = new Cart();
+	cart = cartDao.check();
+	int amount = 0;
+	int price = 0;
+	amount = amount + cart.getAmount();
+	price = price + cart.getPrice();
 %>
 <footer class="footer2">
 	<!-- 주문 요약 -->

@@ -4,31 +4,50 @@
  * */
 package store.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import store.DTO.Cart;
+import store.DTO.Product;
 import store.DTO.Users;
 
 public class CartDAO extends JDBConnection {
 
 	/**
-	 * 회원 가입
-	 * @param user
+	 * 장바구니 추가
+	 * @param cart
 	 * @return
 	 */
-	public int join(Users user) {
+	/*
+	 *
+	 *     
+    cartItem.setProductName(productName);
+    cartItem.setAmount(count);
+    cartItem.setPrice(price);
+    cartItem.setImagePath(imagePath);
+
+	 * */
+	public int addToCart(Cart cart) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
 		
 		// 전화번호, 이름만 users 테이블에 저장
 		// join_date는 회원 가입 당시 일자를 sysdate로 추가
-		String sql = " INSERT INTO users ( phone, point, join_date ) "
-				   + " VALUES(?, ?, sysdate) ";
+		// table 번호를 어떻게 받아 올건지 ???
+		String sql = " INSERT INTO cart ( table_no, user_id, product_name, amount, price ) "
+				   + " VALUES('', '', ?, ?, ?) ";
 		
 		try {
 			psmt = con.prepareStatement(sql);			// 쿼리 실행 객체 생성
-			psmt.setString( 1, user.getPhone() );
-			psmt.setInt( 2, user.getPoint() );
+			psmt.setString( 1, cart.getProductName() );
+			psmt.setInt( 2, cart.getAmount() );
+			psmt.setInt( 3, cart.getPrice() );
+			// psmt.setString( 4, cart.getImagePath() );
 			result = psmt.executeUpdate();		// SQL 실행 요청, 적용된 데이터 개수를 받아온다.
 												// 회원가입 		성공 시, result : 1
 												// 				실패 시, result : 0
@@ -43,59 +62,109 @@ public class CartDAO extends JDBConnection {
 	
 	
 	/**
-	 * 포인트 확인
-	 * @param user
+	 * 장바구니 확인
+	 * @param int no? 테이블 번호, 유저 아이디? 
 	 * @return
 	 */
-	public Users check(Users user) {
-		
+	public Cart check() {
+		Cart cart = new Cart();
 		// SQL 작성
-		String sql = " SELECT * "
-				   + " FROM users "
-				   + " WHERE phone = ?"; //  and name = ? "
+		String sql = " SELECT SUM(amount) AS total_amount, SUM(price) AS total_price "
+				   + " FROM cart "
+				   // 테이블 번호랑? userId 별로 조회해야하는데 처음에 어떻게 해야할지?
+				   + " WHERE table_no = 1 ";
+				   //+ " AND user_id = ? "; //  and name = ? "
 		try {
 			// 쿼리(SQL) 실행 객체 생성 - PreparedStatement (psmt)
 			psmt = con.prepareStatement(sql);
 			
 			// psmt.setXXX( 순서번호, 매핑할 값 );
-			psmt.setString( 1, user.getPhone() );
-			// psmt.setString( 2, user.getPoint() );
+			//psmt.setInt( 1, 1 );
 			
 			// 쿼리(SQL) 실행 -> 결과  - ResultSet (rs)
 			rs = psmt.executeQuery();
 			
 			// 조회 결과를 1건 가져오기
 			if( rs.next() ) {		// next() : 실행 결과의 다음 데이터로 이동
-				user.setPhone( rs.getString("phone") );
-				user.setPoint( rs.getInt("point"));
-				user.setJoinDate( rs.getDate("join_date") );
-				return user;		// return 포인트
+				cart.setAmount( rs.getInt("total_amount") );
+				cart.setPrice( rs.getInt("total_price") );
+				return cart;		// return 포인트
 			}
 			return null;
 		} catch(SQLException e) {
-			System.err.println("로그인 시, 예외 발생");
+			System.err.println("장바구니 요약 시, 예외 발생");
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	/*
-	 * Point 업데이트
-	 */
-	public int updatePoints(String phone, int newPoints) {
-	    String sql = "UPDATE users SET point = ? WHERE phone = ?";
-	    try {
-	        psmt = con.prepareStatement(sql);
-	        psmt.setInt(1, newPoints);
-	        psmt.setString(2, phone);
-	        
-	        int result = psmt.executeUpdate();
-	        return result; // 성공적으로 업데이트된 행의 수 반환
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return 0; // 오류 발생 시 0 반환
-	    }
-	}
+	
+	 /*
+	  * 2024-04-09 : 박은서
+     * 특정 테이블 번호의 장바구니 목록 가져오기
+     */
+    public List<Cart> getCartList(int tableNum) {
+        List<Cart> cartList = new ArrayList<>();
+
+        try {
+        	// 이미지 패스를 가져오기 위해 테이블 조인
+            String sql = "SELECT C.table_no, C.user_id, C.product_name, C.amount,"
+            		+ "			 C.price, P.image_path "
+            			+ " FROM cart C, PRODUCT P "
+            			+ " WHERE table_no = ? "
+            			+ " AND C.PRODUCT_NAME = P.NAME ";
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, tableNum);
+
+			rs = psmt.executeQuery();
+
+            while (rs.next()) {
+                Cart cart = new Cart();
+                // rs에서 값을 가져와서 cart에 설정
+                cart.setProductName(rs.getString("product_name"));
+                cart.setPrice(rs.getInt("price"));
+                cart.setAmount(rs.getInt("amount"));
+                cart.setImagePath(rs.getString("image_path"));
+                 cart.setTableNo(rs.getInt("table_no"));
+                // 추가적으로 필요한 속성이 있다면 여기에 설정
+                cartList.add(cart);
+            }
+        } catch (SQLException e) {
+            System.err.println("장바구니 목록 조회 중 예외 발생");
+            e.printStackTrace();
+        } finally {
+            // 자원 해제
+            if (rs != null) try { rs.close(); } catch (SQLException e) {}
+            if (psmt != null) try { psmt.close(); } catch (SQLException e) {}
+            if (con != null) try { con.close(); } catch (SQLException e) {}
+        }
+
+        return cartList;
+    }
+    
+    /*
+     * 2024-04-09 : 박은서
+     * 중복제거 후 장바구니 페이지에 적용하기 위한 메소드
+     */
+    public List<Cart> getUniqueCartList(int tableNum) {
+        List<Cart> originalList = getCartList(tableNum); // 원본 장바구니 목록 가져오기
+        Map<String, Cart> cartMap = new HashMap<>(); // 제품 이름을 키로 사용하여 중복 제거
+        
+        for (Cart item : originalList) {
+            if (cartMap.containsKey(item.getProductName())) {
+                // 이미 존재하는 항목이면, 수량과 가격 업데이트
+                Cart existingItem = cartMap.get(item.getProductName());
+                existingItem.setAmount(existingItem.getAmount() + item.getAmount());
+                // 가격은 총합으로 업데이트하거나 다른 로직 적용 가능
+                existingItem.setPrice(existingItem.getPrice() + item.getPrice());
+            } else {
+                // 새 항목이면, 맵에 추가
+                cartMap.put(item.getProductName(), item);
+            }
+        }
+        
+        return new ArrayList<>(cartMap.values()); // 중복 제거된 목록 반환
+    }
 
 
 	public static int insert(Cart cart) {
@@ -109,10 +178,57 @@ public class CartDAO extends JDBConnection {
 		return null;
 	}
 
+	/*
+	 * 2024-04-09 : 박은서
+	 * 장바구니 내역 업데이트를 위한 메소드
+	 */
+	@SuppressWarnings("resource")
+	public static int updateCartItemQuantityAndPrice(int tableNo, String productName) {
+	    Connection con = null;
+	    PreparedStatement psmt = null;
+	    ResultSet rs = null;
+	    int result = 0;
 
-	public static int update(Cart cart) {
+	    try {
+	        con = getConnection(); // 데이터베이스 연결 설정 메소드
+	        
+	        // 1. product 테이블에서 productName에 해당하는 가격 조회
+	        String priceQuery = "SELECT price FROM product WHERE name = ?";
+	        psmt = con.prepareStatement(priceQuery);
+	        psmt.setString(1, productName);
+	        rs = psmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            int productPrice = rs.getInt("price");
+	            
+	            // 2. cart 테이블에서 해당 테이블 번호와 제품 이름에 맞는 항목의 수량과 가격 업데이트
+	            String updateQuery = "UPDATE cart SET amount = amount - 1, price = price - ? "
+	                               + "WHERE table_no = ? AND product_name = ? AND amount > 1";
+	            psmt = con.prepareStatement(updateQuery);
+	            psmt.setInt(1, productPrice);
+	            psmt.setInt(2, tableNo);
+	            psmt.setString(3, productName);
+	            
+	            result = psmt.executeUpdate();
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("카트 항목 수량 및 가격 업데이트 중 예외 발생");
+	        e.printStackTrace();
+	    } finally {
+	        // 자원 해제
+	        if (rs != null) try { rs.close(); } catch (SQLException e) {}
+	        if (psmt != null) try { psmt.close(); } catch (SQLException e) {}
+	        if (con != null) try { con.close(); } catch (SQLException e) {}
+	    }
+
+	    return result;
+	}
+
+
+
+	private static Connection getConnection() {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 
@@ -120,6 +236,8 @@ public class CartDAO extends JDBConnection {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
 }
 
 

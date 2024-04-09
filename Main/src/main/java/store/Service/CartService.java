@@ -38,6 +38,10 @@ public interface CartService {
 	
 	// 장바구니 삭제
 	int delete(String productName);
+	
+	// 장바구니 중복 제거 
+    public List<Cart> getUniqueCartList(int tableNum);
+
 }
 
 

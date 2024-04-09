@@ -50,5 +50,11 @@ public class addToCartServlet implements CartService {
 		return result;
 	}
 
+	@Override
+	public List<Cart> getUniqueCartList(int tableNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

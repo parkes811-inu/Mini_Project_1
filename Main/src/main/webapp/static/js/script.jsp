@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<head>
 <!-- booststrap -->
-<script src="<%= request.getContextPath() %>/static/js/bootstrap.bundle.min.js" ></script>
+<!-- <script src="<%= request.getContextPath() %>/static/js/bootstrap.bundle.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- js -->
-<%-- <script src="<%= request.getContextPath() %>/static/js/modal.js"></script> <!-- JavaScript 파일 참조 --> --%>
-<script src="<%= request.getContextPath() %>/static/js/script.js"></script>
+<!-- <script src="<%= request.getContextPath() %>/static/js/modal.js"></script> JavaScript 파일 참조 -->
+<script src="<%= request.getContextPath() %>/static/js/script.jsp"></script>
+</head>
 
 <script>
 		
@@ -87,29 +87,32 @@
 		        let productName = $('#product-detail-name').text();
 		        let count = $('#detail-count').val();
 		        let price = $('#product-detail-price').text();
-		        let imagePath = $('#detail-img-box').html()
+		        //let imagePath = $('#detail-img-box').html()
 		        let data = {
 		            productId: productId,
 		            productName: productName,
 		            count: count,
-		            price: price,
-		            imagePath: imagePath
+		            price: price
+		            //imagePath: imagePath
 		        };
 
 		        $.ajax({
 		            type: "POST",
-		            url: "addToCartServlet", // 장바구니에 추가하는 서블릿 URL
+		            url: "addToCartServlet.jsp", // 장바구니에 추가하는 서블릿 URL
 		            data: data,
 		            success: function(response) {
 		                alert('추가가 완료되었습니다.');
+		                $('#myModal').hide();
+		                window.location.reload("/layout/footer2.jsp");
 		            },
 		            error: function(xhr, status, error) {
 		                alert('추가 중 오류가 발생했습니다.');
+		                console.error(xhr.status);
 		                console.error(xhr.responseText);
 		            }
 		        });
     		});
-		});	
+		});	 
 		
 			
 	</script>
