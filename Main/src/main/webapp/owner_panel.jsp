@@ -8,13 +8,14 @@
 <%@page import="store.DTO.Order"%>
 <%@page import="store.Service.OrderServiceImpl"%>
 <%@page import="store.Service.OrderService"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
-	if (session != null && session.getAttribute("loginId") != null) {
+if (session != null && session.getAttribute("loginId") != null) {
 %>
 <!DOCTYPE html>
 <html lang="ko" data-bs-theme="auto">
@@ -252,30 +253,27 @@ html, body, .container, .row, .col-md-4 {
 </svg>
 
 	<%
-	    Order order = new Order();
-	    List<Order> orders = new ArrayList<>();
-	    
-	    // 테이블 리스트
-// 	    List<List<?>> tableList = new ArrayList<>();
-	    Map<Integer, List<?>> tableMap = new HashMap<>();
-// 	    List<List<?>> tableList = new ArrayList<>();
-	    
-	    
-	    OrderDAO orderDAO = new OrderDAO();
-	    int table_sz = 6;
-	    for(int i = 0; i < table_sz; i++) {
-	        // 자바 문법에 맞게 추가
-	        orders = orderDAO.list(i + 1);
-	        
-	        if( orders != null ) {
-// 	        	tableList.add(i, orders);
-	        	tableMap.put(i+1, orders);
-	        }
-	    }
-	    
-// 	    pageContext.setAttribute("tableList", tableList);
-	    pageContext.setAttribute("tableMap", tableMap);
-	    
+	List<Order> orders = new ArrayList<>();
+
+	// 테이블 리스트
+	// 	    List<List<?>> tableList = new ArrayList<>();
+	Map<Integer, List<?>> tableMap = new HashMap<>();
+	// 	    List<List<?>> tableList = new ArrayList<>();
+
+	OrderDAO orderDAO = new OrderDAO();
+	int table_sz = 6;
+	for (int i = 0; i < table_sz; i++) {
+		// 자바 문법에 맞게 추가
+		orders = orderDAO.list(i + 1);
+
+		if (orders != null) {
+			// 	        	tableList.add(i, orders);
+			tableMap.put(i + 1, orders);
+		}
+	}
+
+	// 	    pageContext.setAttribute("tableList", tableList);
+	pageContext.setAttribute("tableMap", tableMap);
 	%>
 
 
@@ -304,11 +302,40 @@ html, body, .container, .row, .col-md-4 {
 		</div>
 	</nav>
 
+	<!-- 모달 창 -->
+	<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
+	<c:forEach var="modal" items="${ tableMap }">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">금일 매출 관리</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 모달 내용 -->
+					모달 내용을 입력하세요.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<!-- 다른 버튼 등을 추가할 수 있습니다. -->
+				</div>
+			</div>
+		</div>
+	</c:forEach>
+	</div>
+
+	<script>
+	// 매출 관리 버튼 클릭 시 모달 띄우기
+	document.querySelector('.navbar-nav button:nth-of-type(1)')
+			.addEventListener('click',
+					function() { var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+		myModal.show();
+	});
+	</script>
+
 	<div class="container">
 		<div class="row justify-content-center align-items-center h-100">
-		
-		
-<%-- 			<c:forEach var="table" items="${tableList}"> --%>
+			<%-- 			<c:forEach var="table" items="${tableList}"> --%>
 			<c:forEach var="table" items="${ tableMap }">
 				<div class="col-md-4 mb-4">
 					<div class="card outer-card">
@@ -319,28 +346,34 @@ html, body, .container, .row, .col-md-4 {
 								<div class="card-body">
 									<c:set var="totalPrice" value="0" />
 									<c:forEach var="order" items="${ table.value }">
-									<%-- 주문 상태가 'pay ok'인 경우에만 화면에 표시 --%>
-									<c:if test="${ order.status eq 'pay ok' }">
-										<div style="display: flex; justify-content: space-between;">
-											<p class="card-text text-dark">${ order.menu_name }</p>
-											<p class="card-text text-dark">
-												<fmt:formatNumber value="${ order.price }" type="currency" currencyCode="KRW"/>
+										<%-- 주문 상태가 'pay ok'인 경우에만 화면에 표시 --%>
+										<c:if test="${ order.status eq 'pay ok' }">
+											<div style="display: flex; justify-content: space-between;">
+												<p class="card-text text-dark">
+													<!-- 반복문으로 menu_name 같은게 나오면 name 중복 제거 후 amount 만큼 더해서 출력  -->
+													${ order.menu_name }
+												</p>
+												${ order.amount }개
+												<p class="card-text text-dark">
+													<fmt:formatNumber value="${ order.price }" type="currency"
+														currencyCode="KRW" />
+												</p>
+											</div>
+
+											<!-- <p class="card-text text-dark">내용을 여기에 넣으세요.</p> -->
+											<p style="display: none">${ totalPrice = Integer.parseInt(totalPrice) + order.price }
 											</p>
-										</div>
-									
-<!-- 										<p class="card-text text-dark">내용을 여기에 넣으세요.</p> -->
-										<p style="display: none">
-											${ totalPrice = Integer.parseInt(totalPrice) + order.price }
-										</p>
-									</c:if>
-									</c:forEach>						
+										</c:if>
+									</c:forEach>
 								</div>
 								<div class="card-footer card-footer-custom">
-<!-- 									<p class="text-dark mb-0 mr-auto">￦</p> -->
+									<!-- 									<p class="text-dark mb-0 mr-auto">￦</p> -->
 									<p class="text-dark mb-0 mr-auto">
-										<fmt:formatNumber value="${ totalPrice }" type="currency" currencyCode="KRW"/>
+										<fmt:formatNumber value="${ totalPrice }" type="currency"
+											currencyCode="KRW" />
 									</p>
-									<button class="btn btn-dark btn-custom">완료</button>
+									<button class="btn btn-dark btn-custom"
+										onclick="completeOrder('${ table.key }')">완료</button>
 								</div>
 							</div>
 							<!-- 내부 카드 끝 -->
@@ -348,16 +381,51 @@ html, body, .container, .row, .col-md-4 {
 					</div>
 				</div>
 			</c:forEach>
-		
+
 		</div>
 	</div>
+	<script type="text/javascript">
+		function completeOrder(tableNo) {
+			// AJAX 요청 생성
+			var xhr = new XMLHttpRequest();
+			var url = "submit_order.jsp";
+			var params = "tableNo=" + tableNo; // 요청 데이터
+			xhr.open("POST", url, true);
+
+			// 요청 헤더 설정
+			xhr.setRequestHeader("Content-type",
+					"application/x-www-form-urlencoded");
+
+			// 서버 응답 처리
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						// 서버 응답이 성공적으로 도착한 경우
+						var response = JSON.parse(xhr.responseText);
+						if (response.success) {
+							alert("주문이 성공적으로 완료되었습니다.");
+							location.reload();
+						} else {
+							alert("주문 처리 중 오류가 발생했습니다.");
+						}
+					} else {
+						// 서버 응답이 실패한 경우
+						alert("서버 오류: " + xhr.status);
+					}
+				}
+			};
+
+			// AJAX 요청 전송
+			xhr.send(params);
+		}
+	</script>
 
 	<script src="static/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
 <%
-	} else {
-		response.sendRedirect("OwnerLogin/login.jsp");
-	}
+} else {
+response.sendRedirect("OwnerLogin/login.jsp");
+}
 %>

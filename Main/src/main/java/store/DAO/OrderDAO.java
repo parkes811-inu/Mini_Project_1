@@ -35,8 +35,6 @@ public class OrderDAO extends JDBConnection {
 				Order order = new Order();
 
 				// 결과 데이터 가져오기
-			
-				
 				order.setOrder_no(rs.getInt("order_no"));
 				order.setTable_no(rs.getInt("table_no"));
 				order.setMenu_name(rs.getString("menu_name"));
@@ -123,6 +121,25 @@ public Order select(int no) {
 		return result;
 	}
 	
+	public int statusUpdate(int table_no) {
+		int result = 0;
+		
+		String sql = " UPDATE ORDERS "
+				   + " SET STATUS = 'complete' "
+				   + " WHERE table_no = ? ";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, table_no);
+			
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			System.err.println("상태 수정 시, 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	
 	public int delete(int no) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
@@ -145,5 +162,6 @@ public Order select(int no) {
 		}
 		return result;
 	}
+	
 	
 }

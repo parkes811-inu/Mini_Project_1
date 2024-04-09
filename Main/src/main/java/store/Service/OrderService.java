@@ -12,6 +12,9 @@ public interface OrderService {
 	
 	Order select(int no);
 	
+	int statusUpdate(int table_no);
+	
 	int delete(int no);
+
 
 }

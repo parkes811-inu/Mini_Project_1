@@ -29,6 +29,14 @@ public class OrderServiceImpl implements OrderService{
 		
 		return result;
 	}
+	
+	@Override
+	public int statusUpdate(int table_no) {
+		
+		int result = orderDAO.statusUpdate(table_no);
+		
+		return result;
+	}
 
 	@Override
 	public int delete(int no) {
@@ -37,5 +45,8 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	
+
+	
+
 
 }
