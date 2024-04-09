@@ -304,7 +304,6 @@ html, body, .container, .row, .col-md-4 {
 
 	<!-- 모달 창 -->
 	<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
-	<c:forEach var="modal" items="${ tableMap }">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -321,7 +320,6 @@ html, body, .container, .row, .col-md-4 {
 				</div>
 			</div>
 		</div>
-	</c:forEach>
 	</div>
 
 	<script>
