@@ -20,20 +20,22 @@
     CartDAO cartDao = new CartDAO();
     List<Cart> cartList = cartDao.getUniqueCartList(tableNum); 
     int totalPrice = 0; // 총 가격 계산을 위한 변수
-%>
-<%
+    
 	if(cartList.isEmpty()) {
 %>
-		<!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->	
-		<h1>장바구니가 비었습니다.</h1>
-		<a href="modal_menu.jsp">더 담으러가기</a>
+	  <!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->   
+	  <div class="basketContainer">
+	     <img src="static/img/emptyBasket.jpg" alt="Empty cart"> <!-- 위 경로에 이미지를 추가해주세요 -->
+	     <a href="modal_menu.jsp">더 담으러가기</a>
+	  </div>
 <%		 
+
 	}
 	else {
 %>
   <h1 class="title">결제</h1>
 <div class="card">
-  <h2 class="subtitle"><%= tableNum %> 번 테이블 주문서</h2>
+  <h2 class="subtitle" id="data-tableNo"><%= tableNum %> 번 테이블 주문서</h2>
   <div class="order-details">
     <div class="order-header">
       <span>주문 정보</span>
@@ -51,7 +53,7 @@
     <div class="total-amount">
       <br>
       <span>총합</span>
-      <span>₩ <%= totalPrice %> 원</span>
+      <span id="data-totalPrice">₩ <%= totalPrice %> 원</span>
     </div>
   </div>
   <div class="point">
@@ -65,9 +67,13 @@
   </div>
 </div>
 
-    <script src="<%=request.getContextPath()%>/static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
+   <script src="<%=request.getContextPath()%>/static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
 <%
 	}
 %>
+
+<script type="css">
+
+</script>
 </body>
 </html>

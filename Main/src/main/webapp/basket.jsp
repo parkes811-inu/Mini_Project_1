@@ -26,8 +26,10 @@
 	if(uniqueCartList.isEmpty()) {
 %>
 		<!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->	
-		<h1>장바구니가 비었습니다.</h1>
-		<a href="modal_menu.jsp">더 담으러가기</a>
+	  <div class="basketContainer">
+	     <img src="static/img/emptyBasket.jpg" alt="Empty cart"> <!-- 위 경로에 이미지를 추가해주세요 -->
+	     <a href="modal_menu.jsp">더 담으러가기</a>
+	  </div>
 <%		
 	}
 	else {
@@ -70,13 +72,6 @@ $(document).ready(function() {
         var currentQuantity = parseInt(quantitySpan.text());
 		var price = $(this).data('price')
 		var operation = "-";
-        //if(currentQuantity == 0) {
-        	// 장바구니에서 데이터 삭제하는 서블릿 작성
-        	//$.ajax {
-        		//type: "POST",
-        		//url: "deleteB"
-        	//}
-        //}
         
         if (currentQuantity > 0) {
             var newQuantity = currentQuantity - 1;
@@ -108,8 +103,8 @@ $(document).ready(function() {
 
     $('.quantity-increase').click(function() {
     	var tableNum = 1; 
-        var productId = $(this).data('productId');
-        var quantitySpan = $(this).siblings('.quantity');
+    	var productName = $(this).data('productId'); // 제품 이름을 가져옵니다.
+    	var quantitySpan = $(this).siblings('.quantity');
         var currentQuantity = parseInt(quantitySpan.text());
         var newQuantity = currentQuantity + 1;
         quantitySpan.text(newQuantity);
