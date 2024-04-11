@@ -236,14 +236,13 @@ public class CartDAO extends JDBConnection {
 	}
 
 
-
-	private static Connection getConnection() {
+	public static int delete(String productName) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 
-	public static int delete(String productName) {
+	public static int update(Cart cart) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

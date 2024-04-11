@@ -9,13 +9,22 @@
 
 document.getElementById('cardButton').addEventListener('click', function() {
   
-  // 카드 결제 관련 로직 구현
-  // total_price를 어떻게 불러올지 ?
-  var total_price = 1000;
-  alert( total_price + '원을 카드로 결제하였습니다.');
-  
-  // db에 추가하는 로직 구현.
-  
+    var xhrUpdate = new XMLHttpRequest();
+	xhrUpdate.open("POST", "GetTotalPriceServlet.jsp", true);
+	xhrUpdate.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhrUpdate.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	        // 포인트가 차감된 거 만큼 결제를 진행 
+	         alert('포인트가 성공적으로 차감되었습니다.');
+	        // alert(parseInt(this.responseText, 10));
+	        
+	        // 결제 완료 후 장바구니 (cart) 에 있던 목록들 order_log로 이동 후 cart 테이블에 해당 정보들 삭제.
+	        
+	        // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
+	      	window.location.href = 'modal_menu.jsp';
+	    }
+	};
+	xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);
   
 });
 
@@ -24,9 +33,10 @@ document.getElementById('cashButton').addEventListener('click', function() {
   // 현금 결제 관련 로직 구현
   // total_price를 어떻게 불러올지 ?
   var total_price = 1000;
-  alert( total_price + '원을 현금으로 결제하였습니다.');
+  alert( total_price + '원을 우체국 101816-02-093538로 입금해주세요.');
   
   // db에 추가하는 로직 구현.
+  
 });
 
 /* 포인트 버튼 이벤트 */
@@ -63,6 +73,7 @@ document.getElementById('pointButton').addEventListener('click', function() {
                         if (this.readyState == 4 && this.status == 200) {
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
+                            // 결제 완료 후 장바구니 (cart) 에 있던 목록들 order_log로 이동 후 cart 테이블에 해당 정보들 삭제.
                         }
                     };
                     // checkUserPoints.jsp에 전송되는 데이터
@@ -86,13 +97,14 @@ document.getElementById('pointButton').addEventListener('click', function() {
 	                    xhrUpdate.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	                    xhrUpdate.onreadystatechange = function() {
 	                        if (this.readyState == 4 && this.status == 200) {
-	                            // alert('포인트가 성공적으로 차감되었습니다.');
 	                            // 포인트가 차감된 거 만큼 결제를 진행 
+	                             alert('포인트가 성공적으로 차감되었습니다.');
 	                            // alert(parseInt(this.responseText, 10));
-	                            alert('시1ㅏㅂㄹ');
+	                            
+	                            // 결제 완료 후 장바구니 (cart) 에 있던 목록들 order_log로 이동 후 cart 테이블에 해당 정보들 삭제.
+	                            
 	                            // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
                               	window.location.href = 'modal_menu.jsp';
-								alert('시1ㅏㅂㄹ123');
 	                        }
 	                    };
 	                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);
