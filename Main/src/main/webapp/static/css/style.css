@@ -38,27 +38,70 @@
 
 
 /* ======================================================================== */
-
-/* 모달 스타일 */ 
-.modal {
-    display: none; /* 처음에는 숨겨져 있음 */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); /* 반투명 검은색 배경 */
+/* 모바일에서 2개씩 정렬 */
+@media only screen and (max-width: 768px) {
+    .openModalBtn {
+        width: calc(50% - 10px); /* 모바일 화면에서는 가로 공간의 반을 차지하도록 설정하고 간격을 고려해 계산합니다. */
+        display: inline-block; /* 인라인 블록 요소로 설정하여 자동으로 정렬됩니다. */
+        box-sizing: border-box; /* 요소의 너비에 border와 padding 값을 포함시킵니다. */
+        padding: 0 10px; /* 좌우 간격을 줍니다. */
+        margin-bottom: 10px; /* 아래쪽으로 10px의 마진을 추가하여 각 버튼 사이에 간격을 만듭니다. */
+    }
+}
+/* 태블릿 이상에서 3개씩 정렬 */
+@media only screen and (min-width: 769px) {
+    .openModalBtn {
+        width: calc(33.33% - 10px); /* 가로 공간의 1/3을 차지하도록 설정하고 간격을 고려해 계산합니다. */
+        display: inline-block; /* 인라인 블록 요소로 설정하여 자동으로 정렬됩니다. */
+        box-sizing: border-box; /* 요소의 너비에 border와 padding 값을 포함시킵니다. */
+        padding: 0 10px; /* 좌우 간격을 줍니다. */
+        margin-bottom: 10px; /* 아래쪽으로 10px의 마진을 추가하여 각 버튼 사이에 간격을 만듭니다. */
+    }
 }
 
-/* 모달 내용 스타일 */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 화면 중앙에 위치 */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* 내용 너비는 전체의 80% */
+/* ==================================================================================================  */
+/* 주변 여백을 제거 */ 
+@media only screen and (max-width: 768px) {
+    .openModalBtn {
+    margin: 0; /* 외부 여백을 0으로 설정합니다. */
+    padding: 0; /* 내부 여백을 0으로 설정합니다. */
+    border: 0; /* 테두리를 없앱니다. */
+    vertical-align: baseline; /* 세로 정렬을 기본 베이스라인으로 설정합니다 */
+    background: transparent; /* 배경을 투명으로 설정 */
+    text-decoration: none; /* 텍스트에 밑줄을 없앱니다 */
+    display: inline-block; /* 요소를 인라인 블록으로 설정하여 다른 인라인 요소와 함께 사용될 때 여백 및 크기를 적용할 수 있도록 합니다. */
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .openModalBtn {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    background: transparent;
+    text-decoration: none;
+    display: inline-block;
+    }
+}
+
+.item_list {
+    text-align: center;
+    margin: 20px 0;
+    min-height: 180px;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding: 0 10px;
+    width: 50%;
+}
+
+/* 메뉴판 이미지 크기를 조절 */
+.openModalBtn img {
+    width: auto; /* 이미지의 너비를 100px로 설정합니다. */
+    max-width: 90%;
+    height: auto; /* 이미지의 높이를 100px로 설정합니다. */
+    max-height: 90%;
 }
 
 /* 닫기 버튼 스타일 */
@@ -76,6 +119,12 @@
     cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 }
 
+.item_tit h3 {
+    color: #0E0E0E;
+    font-size: 14px;
+    font-weight: 1000;
+}
+
 /* ======================================================================== */
 /* 사용설명서 이미지 파일 CSS */
 .info {
@@ -90,8 +139,10 @@
 .info img {
     display: block; /* 이미지를 블록 요소로 만들어 줄 바꿈이 생기게 합니다. */
     margin: 20px auto; /* 이미지를 수평 중앙에 위치시킵니다. */
+    max-width: 100%; /* 이미지의 최대 너비를 설정합니다. */
+    height: auto; /* 이미지의 높이를 자동으로 조정합니다. */
+    width: 375px; /* iPhone 12 Pro의 너비에 맞추어 이미지의 너비를 설정합니다. */
 }
-
 /* ======================================================================== */
 
 /* footer */
@@ -142,17 +193,42 @@
     padding: 0 10px; /* 내부 패딩 */
 }
 /* 수량과 금액 정보를 포함하는 섹션 */
-.order-info {
-    text-align: center; /* 텍스트 중앙 정렬 */
+    .order-info {
+        display: table;
+        width: 100%;
+        padding: 8px 0;
+    }
+    .order-info p {
+        display: table-row;
+    }
+    .order-info p span {
+        display: table-cell;
+        padding: 0 10px;
+    }
+    
+ .order-info {
+    text-align: right; /* 텍스트 중앙 정렬 */
+} 
+
+.order-quantity {
+    border-bottom: 1px solid #000; /* 밑줄 스타일 */
+    padding-bottom: 3px; /* 밑줄과 텍스트 사이의 여백 */
+    
 }
 
-.order-quantity, .order-amount {
-    border-bottom: 1px solid #000; /* 밑줄 스타일 */
+.order-amount {
+	 border-bottom: 1px solid #000; /* 밑줄 스타일 */
     padding-bottom: 3px; /* 밑줄과 텍스트 사이의 여백 */
 }
 
 .order-button {
-    padding: 10px 20px;
+	display: inline-block;
+	width: 40%;
+	min-height: 40%;
+	height: 60px;
+	line-height: 60px;
+	vertical-align: bottom;
+	text-decoration: none; /* 링크의 밑줄 제거 */
     background-color: #000; /* 버튼 배경색: 검정 */
     color: #fff; /* 버튼 텍스트 색상: 흰색 */
     cursor: pointer; /* 커서 스타일: 포인터 */
@@ -324,3 +400,4 @@ body {
 
 /* ======================================================================== */
 
+/* 상단 메뉴 슬라이드 애니메이셔 */

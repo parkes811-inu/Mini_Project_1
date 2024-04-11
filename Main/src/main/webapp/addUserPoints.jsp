@@ -11,7 +11,7 @@
 <%
     // 요청으로부터 전화번호와 point를 받아옵니다.
     String phoneNum = request.getParameter("phoneNum");
-	String point = request.getParameter("point");
+	int point = Integer.parseInt(request.getParameter("pointsToAdd"), 10);
 
     // UserDAO 인스턴스 생성
     UserDAO userDao = new UserDAO();
@@ -21,7 +21,8 @@
     user.setPhone(phoneNum);
     user.setPoint(point);
     
-    // 포인트 초기화는 UserDTO의 생성자나 join 메소드 내에서 처리하는 것이 좋습니다.
+    out.println("user.setPoint(point)");
+    
     // 유저 추가
     int result = userDao.join(user);
     
