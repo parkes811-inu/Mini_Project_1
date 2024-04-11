@@ -4,6 +4,8 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Date" %>
+<%@page import="java.text.SimpleDateFormat" %>
 <%@page import="store.DAO.OrderDAO"%>
 <%@page import="store.DTO.Order"%>
 <%@page import="store.Service.OrderServiceImpl"%>
@@ -21,6 +23,7 @@ if (session != null && session.getAttribute("loginId") != null) {
 <html lang="ko" data-bs-theme="auto">
 <head>
 <script src="static/js/color-modes.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
@@ -274,6 +277,12 @@ html, body, .container, .row, .col-md-4 {
 
 	// 	    pageContext.setAttribute("tableList", tableList);
 	pageContext.setAttribute("tableMap", tableMap);
+	
+	// 오늘 날짜 가져오기
+	java.util.Date utilDate = new java.util.Date();
+	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	String todayStr = sdf.format(utilDate);
+	request.setAttribute("todayStr", todayStr);
 	%>
 
 
@@ -289,13 +298,10 @@ html, body, .container, .row, .col-md-4 {
 			<div class="collapse navbar-collapse" id="navbarToggler">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">매출 관리</button>
+						<button id="salesBtn" class="btn btn-lg btn-dark ms-3 me-3" type="button">매출 관리</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3 me-3" type="button">메뉴 추가</button>
-					</li>
-					<li class="nav-item">
-						<button class="btn btn-lg btn-dark ms-3" type="button">주문 취소</button>
+						<button id="cancelBtn" class="btn btn-lg btn-dark ms-3" type="button">주문 취소</button>
 					</li>
 				</ul>
 			</div>
@@ -307,12 +313,51 @@ html, body, .container, .row, .col-md-4 {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">금일 매출 관리</h5>
+					<h5 class="modal-title">금일 매출 관리 <%= todayStr %></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<!-- 모달 내용 -->
-					모달 내용을 입력하세요.
+			<table class="table">
+        		<thead>
+            		<tr>
+                		<th>테이블 번호</th>
+                		<th>매출 금액</th>
+            		</tr>
+        		</thead>
+        		<tbody>
+            	<c:forEach var="table" items="${tableMap}">
+				    <tr>
+				        <td>${table.key}</td>
+				        <td>
+				            <%-- 각 테이블의 매출 합계 계산 --%>
+				            <c:set var="totalSales" value="0" />
+				            <c:forEach var="order" items="${table.value}">
+				                <%-- 주문 날짜가 오늘인 경우에만 합산 --%>
+				                <c:if test="${ order.order_date eq todayStr }">
+				                    <%-- 주문 가격 합계 --%>
+				                    <c:set var="totalSales" value="${totalSales + order.price}" />
+				                </c:if>
+				            </c:forEach>
+				            <fmt:formatNumber value="${totalSales}" type="currency" currencyCode="KRW" />
+				        </td>
+				    </tr>
+				</c:forEach>
+        		</tbody>
+    		</table>
+    		<p>금일 총 매출: 
+			    <c:set var="totalDailySales" value="0" />
+			    <c:forEach var="table" items="${tableMap}">
+			        <c:forEach var="order" items="${table.value}">
+			            <%-- 주문 날짜가 오늘인 경우에만 합산 --%>
+			            <c:if test="${ order.order_date eq todayStr }">
+			                <%-- 주문 가격 합계 --%>
+			                <c:set var="totalDailySales" value="${totalDailySales + order.price}" />
+			            </c:if>
+			        </c:forEach>
+			    </c:forEach>
+			    <fmt:formatNumber value="${totalDailySales}" type="currency" currencyCode="KRW" />
+			</p>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -323,14 +368,42 @@ html, body, .container, .row, .col-md-4 {
 	</div>
 
 	<script>
-	// 매출 관리 버튼 클릭 시 모달 띄우기
-	document.querySelector('.navbar-nav button:nth-of-type(1)')
-			.addEventListener('click',
-					function() { var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-		myModal.show();
-	});
+    // 매출 관리 버튼 클릭 시 모달 띄우기
+    document.getElementById('salesBtn').addEventListener('click', function() {
+        // 모달 띄우기
+        $('#myModal').modal('show');
+    });
 	</script>
+	
 
+	<!-- 주문 취소 모달 -->
+	<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+	    <div class="modal-dialog modal-lg">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title">주문 취소</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	            <div class="modal-body">
+	                <!-- 여기에 주문 취소 폼 또는 내용을 추가하세요 -->
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	                <!-- 다른 버튼 등을 추가할 수 있습니다. -->
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<script>
+    // 주문 취소 버튼 클릭 시 모달 띄우기
+	    document.getElementById('cancelBtn').addEventListener('click', function() {
+	        // 모달 띄우기
+	        $('#cancelModal').modal('show');
+	    });
+	</script>
+	
+	
 	<div class="container">
 		<div class="row justify-content-center align-items-center h-100">
 			<%-- 			<c:forEach var="table" items="${tableList}"> --%>
@@ -353,8 +426,7 @@ html, body, .container, .row, .col-md-4 {
 												</p>
 												${ order.amount }개
 												<p class="card-text text-dark">
-													<fmt:formatNumber value="${ order.price }" type="currency"
-														currencyCode="KRW" />
+													<fmt:formatNumber value="${ order.price }" type="currency" currencyCode="KRW" />
 												</p>
 											</div>
 
@@ -367,8 +439,7 @@ html, body, .container, .row, .col-md-4 {
 								<div class="card-footer card-footer-custom">
 									<!-- 									<p class="text-dark mb-0 mr-auto">￦</p> -->
 									<p class="text-dark mb-0 mr-auto">
-										<fmt:formatNumber value="${ totalPrice }" type="currency"
-											currencyCode="KRW" />
+										<fmt:formatNumber value="${ totalPrice }" type="currency" currencyCode="KRW" />
 									</p>
 									<button class="btn btn-dark btn-custom"
 										onclick="completeOrder('${ table.key }')">완료</button>

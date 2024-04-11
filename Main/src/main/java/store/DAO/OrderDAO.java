@@ -41,8 +41,7 @@ public class OrderDAO extends JDBConnection {
 				order.setAmount(rs.getInt("amount"));
 				order.setPrice(rs.getInt("price"));
 				order.setStatus(rs.getString("status"));
-				
-				//order.setOrder_date(rs.getDate("order_date"));
+				order.setOrder_date(rs.getDate("order_date"));
 
 				// 목록에 추가
 				orderList.add(order);
@@ -96,7 +95,7 @@ public Order select(int no) {
 	public int insert(Order order) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
 		
-		String sql = " INSERT INTO ORDERS (ORDER_NO, TABLE_NO, MENU_NAME, AMOUNT, PRICE, ORDER_DATE, STATUS, PHONE) "
+		String sql = " INSERT INTO ORDERS (ORDER_NO, TABLE_NO, MENU_NAME, AMOUNT, PRICE, sysdate, STATUS, PHONE) "
 				   + " VALUES(SEQ_ORDER.NEXTVAL, ?, ?, ?, ?, ?, ?, ? ) ";
 		
 		try {
@@ -106,7 +105,7 @@ public Order select(int no) {
 			psmt.setString( 3, order.getMenu_name() );
 			psmt.setInt( 4, order.getAmount() );
 			psmt.setInt( 5, order.getPrice() );
-			psmt.setDate( 6, order.getOrder_date() );
+			// psmt.setDate( 6, order.getOrder_date() );
 			psmt.setString( 7, order.getStatus() );
 			psmt.setString( 8, order.getPhone() );
 			
