@@ -10,6 +10,7 @@
 </html>
 <%
     // 요청 파라미터에서 상품 정보 추출
+    int tableNo = Integer.parseInt(request.getParameter("tableNo")); 
     String productId = request.getParameter("productId");
 	String productName = request.getParameter("productName");
     int count = Integer.parseInt(request.getParameter("count"));
@@ -17,6 +18,7 @@
     
     // Cart 객체 생성 및 값 설정
     Cart cartItem = new Cart();
+    cartItem.setTableNo(tableNo);
     cartItem.setProductName(productName);
     cartItem.setAmount(count);
     cartItem.setPrice(price);

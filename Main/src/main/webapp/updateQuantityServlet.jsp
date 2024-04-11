@@ -12,10 +12,12 @@
     // 요청 파라미터에서 상품 정보 추출
 	int tableNum = Integer.parseInt(request.getParameter("tableNum"));
 	String productName = request.getParameter("productName");
-    int quantity = Integer.parseInt(request.getParameter("quantity"));
+	String operation = request.getParameter("operation");
+    // int quantity = Integer.parseInt(request.getParameter("quantity"));
 	
     // 상품 정보를 토대로 업데이트 진행
-    int isSuccess = CartDAO.updateCartItemQuantityAndPrice(tableNum, productName);
+    CartDAO cartDao = new CartDAO();
+    int isSuccess = cartDao.updateCartItemQuantityAndPrice(tableNum, productName, operation);
     
     // 결과에 따라 응답 설정
     response.setContentType("text/plain");

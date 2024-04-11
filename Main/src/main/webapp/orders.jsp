@@ -1,6 +1,7 @@
 <!-- 2024.04.05 박은서
      주문하기 버튼 클릭시 나오는 결제 화면 jsp
  -->
+<%@page import="java.awt.geom.Path2D"%>
 <%@page import="java.util.List"%>
 <%@page import="store.DAO.CartDAO"%>
 <%@page import="store.DTO.Cart"%>
@@ -19,6 +20,16 @@
     CartDAO cartDao = new CartDAO();
     List<Cart> cartList = cartDao.getUniqueCartList(tableNum); 
     int totalPrice = 0; // 총 가격 계산을 위한 변수
+%>
+<%
+	if(cartList.isEmpty()) {
+%>
+		<!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->	
+		<h1>장바구니가 비었습니다.</h1>
+		<a href="modal_menu.jsp">더 담으러가기</a>
+<%		 
+	}
+	else {
 %>
   <h1 class="title">결제</h1>
 <div class="card">
@@ -55,5 +66,8 @@
 </div>
 
     <script src="<%=request.getContextPath()%>/static/js/orders.js"></script> <!-- JavaScript 파일 참조 -->
+<%
+	}
+%>
 </body>
 </html>

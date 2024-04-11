@@ -1,10 +1,14 @@
-<%@page import="java.util.List"%>
+<%@page import="javax.swing.plaf.metal.MetalBorders.Flush3DBorder"%>
+<%@page import="java.awt.geom.Path2D"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
-<%@ include file="layout/footer.jsp" %>
-<%@ include file="layout/footer2.jsp" %>
 
+<%@ page import="java.sql.*" %>
+<%@ page import="store.DAO.CartDAO" %>
+<%@ page import="store.DTO.Cart" %>
+<%@ page import="java.util.ArrayList" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -18,13 +22,25 @@
 	int tableNum = 1;
 	CartDAO cartDao2 = new CartDAO();
 	List<Cart> uniqueCartList = cartDao2.getUniqueCartList(tableNum); // 중복 제거된 장바구니 목록 가져오기
+	
+	if(uniqueCartList.isEmpty()) {
 %>
+		<!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->	
+		<h1>장바구니가 비었습니다.</h1>
+		<a href="modal_menu.jsp">더 담으러가기</a>
+<%		
+	}
+	else {
+
+%>
+	<%@ include file="layout/footer.jsp" %>
+	<%@ include file="layout/footer2.jsp" %>
 	<div class="basket">
 	  <h1 class="title">장바구니</h1>
 	  <h2 class="subtitle"><%= tableNum %> 번 테이블 주문서</h2>
-  <%
+  <% 
       for (Cart cartItem : uniqueCartList) {
-	          // uniqueCartList를 반복하며 각 항목을 표시
+       // uniqueCartList를 반복하며 각 항목을 표시
   %>
 	  <div class="menu-item" data-tableNum="<%= cartItem.getTableNo()%>">
 	    <img src="<%=request.getContextPath()%>/<%= cartItem.getImagePath() %>" alt="<%= cartItem.getProductName() %>" />
@@ -39,6 +55,7 @@
 	  </div>
   <%
       }
+	}
   %>
 </div>
 
@@ -47,18 +64,12 @@ $(document).ready(function() {
     $('.quantity-decrease').click(function() {
     	// tableNum을 어떻게 받아올건지 ?
         var tableNum = 1; 
-        	//$(this).data('tableNum');
-        console.log(tableNum);
-        var productName = $(this).data('productName'); // 제품 이름을 가져옵니다.
-        console.log(productName);
-
+        var productName = $(this).data('productId'); // 제품 이름을 가져옵니다.
+        //console.log(productName);
         var quantitySpan = $(this).siblings('.quantity');
-        console.log(quantitySpan);
-        
         var currentQuantity = parseInt(quantitySpan.text());
-        console.log(currentQuantity);
-        
 		var price = $(this).data('price')
+		var operation = "-";
         //if(currentQuantity == 0) {
         	// 장바구니에서 데이터 삭제하는 서블릿 작성
         	//$.ajax {
@@ -78,13 +89,14 @@ $(document).ready(function() {
                 data: {
                     tableNum: tableNum, // 테이블 번호
                     productName: productName, // 제품 이름
-                    quantity: newQuantity, // 변경된 수량
-                    price: price // 제품 별 가격
+                    // quantity: newQuantity, // 변경된 수량
+                	operation: operation
+                    //price: price // 제품 별 가격
                 },
                 success: function(response) {
                     // 서버로부터 성공적인 응답을 받았을 때의 처리
                     alert("수량이 업데이트되었습니다.");
-                    //window.location.reload(); // 현재 페이지 새로고침
+                    window.location.reload(); // 현재 페이지 새로고침
                 },
                 error: function(xhr, status, error) {
                     // 에러 발생 시 처리
@@ -95,12 +107,36 @@ $(document).ready(function() {
     });
 
     $('.quantity-increase').click(function() {
+    	var tableNum = 1; 
         var productId = $(this).data('productId');
         var quantitySpan = $(this).siblings('.quantity');
         var currentQuantity = parseInt(quantitySpan.text());
         var newQuantity = currentQuantity + 1;
         quantitySpan.text(newQuantity);
+		var operation = "+";
+
         // 여기에 AJAX 요청을 추가하여 서버에 수량 변경사항 반영
+        // AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "updateQuantityServlet.jsp", // 서버 측 업데이트 처리를 위한 URL(서블릿)
+            data: {
+                tableNum: tableNum, // 테이블 번호
+                productName: productName, // 제품 이름
+                operation: operation
+                //quantity: newQuantity, // 변경된 수량
+                //price: price // 제품 별 가격
+            },
+            success: function(response) {
+                // 서버로부터 성공적인 응답을 받았을 때의 처리
+                alert("수량이 업데이트되었습니다.");
+                window.location.reload(); // 현재 페이지 새로고침
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리
+                alert("수량 업데이트 중 오류가 발생했습니다.");
+            }
+        });
     });
 });
 </script>

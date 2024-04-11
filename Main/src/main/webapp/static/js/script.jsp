@@ -8,7 +8,7 @@
 <!-- <script src="<%= request.getContextPath() %>/static/js/modal.js"></script> JavaScript 파일 참조 -->
 <script src="<%= request.getContextPath() %>/static/js/script.jsp"></script>
 </head>
-
+<body>
 <script>
 		
 		// 목록에서 상품 아이템 클릭 
@@ -83,17 +83,18 @@
 		$(document).ready(function() {
 	    	$('#confirm').click(function(event) {
 		        event.preventDefault();
+		        // tableNo는 application으로 등록.
+		        let tableNo = 1;
 		        let productId = $('#detail-product-id').text();
 		        let productName = $('#product-detail-name').text();
 		        let count = $('#detail-count').val();
 		        let price = $('#product-detail-price').text();
-		        //let imagePath = $('#detail-img-box').html()
 		        let data = {
+		        	tableNo: tableNo,
 		            productId: productId,
 		            productName: productName,
 		            count: count,
 		            price: price
-		            //imagePath: imagePath
 		        };
 
 		        $.ajax({
@@ -102,6 +103,8 @@
 		            data: data,
 		            success: function(response) {
 		                alert('추가가 완료되었습니다.');
+		                //alert(tableNo);
+		                
 		                $('#myModal').hide();
 		                window.location.reload("/layout/footer2.jsp");
 		            },
@@ -113,6 +116,5 @@
 		        });
     		});
 		});	 
-		
-			
 	</script>
+</body>

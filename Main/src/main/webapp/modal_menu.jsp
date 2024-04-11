@@ -56,7 +56,8 @@
 	    <div class="modal-body">
 	    <div class="menu">
 	    	<div id="detail-img-box">
-	    		<img src="< % = request.getContextPath() %>${ product.imagePath }" alt="food_img1" class="room_img">
+	    		<!-- 주석 처리 해도 이미지 나옴 -->
+	    		<!--  <img src="< % = request.getContextPath() %>${ product.imagePath }" alt="food_img1" class="room_img">-->
 	    	</div>
             <h4 id="product-detail-name"></h4>
             <h4 id="product-detail-price"></h4>
