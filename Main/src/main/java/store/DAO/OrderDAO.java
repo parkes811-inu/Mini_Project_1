@@ -2,6 +2,7 @@ package store.DAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 import store.DTO.Order;
@@ -42,6 +43,8 @@ public class OrderDAO extends JDBConnection {
 				order.setPrice(rs.getInt("price"));
 				order.setStatus(rs.getString("status"));
 				order.setOrder_date(rs.getDate("order_date"));
+				order.setUse_point(rs.getInt("use_point"));
+				order.setPayment(rs.getString("payment"));
 
 				// 목록에 추가
 				orderList.add(order);
@@ -144,11 +147,13 @@ public Order select(int no) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
 		
 		String sql = " DELETE FROM ORDERS "
-				   + " WHERE ORDER_NO = ? ";
+				   + " WHERE ORDER_NO = ? "
+				   + " AND TABLE_NO = ? ";
 		
 		try {
 			psmt = con.prepareStatement(sql);	// 쿼리 실행 객체 생성
-			psmt.setInt( 1, no );				// 1번 ? 에 게시글 번호를 매핑
+			psmt.setInt( 1, no );
+			psmt.setInt( 2, no );									
 			
 			result = psmt.executeUpdate();		// SQL 실행 요청, 적용된 데이터 개수를 받아온다.
 												// 게시글 1개 적용 성공 시, result : 1
@@ -161,6 +166,37 @@ public Order select(int no) {
 		}
 		return result;
 	}
-	
+
+	public List<Order> getOrdersByDate(String selectedDate) {
+		
+		List<Order> orderList = new ArrayList<Order>();
+		
+		String sql = "SELECT * FROM ORDERS "
+	               + "WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD')";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString( 1, selectedDate );
+			rs = psmt.executeQuery();
+			while (rs.next()) { // next() : 실행 결과의 다음 데이터로 이동
+				Order order = new Order();
+
+				// 결과 데이터 가져오기
+				order.setTable_no(rs.getInt("table_no"));
+				order.setMenu_name(rs.getString("menu_name"));
+				order.setAmount(rs.getInt("amount"));
+				order.setPrice(rs.getInt("price"));
+
+				// 목록에 추가
+				orderList.add(order);
+			}
+			
+		} catch (SQLException e) {
+			System.err.println("Date 조회 시, 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return orderList;
+	}
 	
 }

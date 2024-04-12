@@ -24,15 +24,13 @@ if (session != null && session.getAttribute("loginId") != null) {
 <head>
 <script src="static/js/color-modes.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author"
-	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-<meta name="generator" content="Hugo 0.122.0">
 <title>panel_test</title>
-<link href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
-	rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" rel="stylesheet">
 <link href="static/css/bootstrap.min.css" rel="stylesheet">
 <link href="static/css/sign-in.css" rel="stylesheet">
 <link href="static/css/headers.css" rel="stylesheet">
@@ -256,33 +254,33 @@ html, body, .container, .row, .col-md-4 {
 </svg>
 
 	<%
-	List<Order> orders = new ArrayList<>();
-
-	// 테이블 리스트
-	// 	    List<List<?>> tableList = new ArrayList<>();
-	Map<Integer, List<?>> tableMap = new HashMap<>();
-	// 	    List<List<?>> tableList = new ArrayList<>();
-
-	OrderDAO orderDAO = new OrderDAO();
-	int table_sz = 6;
-	for (int i = 0; i < table_sz; i++) {
-		// 자바 문법에 맞게 추가
-		orders = orderDAO.list(i + 1);
-
-		if (orders != null) {
-			// 	        	tableList.add(i, orders);
-			tableMap.put(i + 1, orders);
-		}
-	}
-
-	// 	    pageContext.setAttribute("tableList", tableList);
-	pageContext.setAttribute("tableMap", tableMap);
+		List<Order> orders = new ArrayList<>();
 	
-	// 오늘 날짜 가져오기
-	java.util.Date utilDate = new java.util.Date();
-	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-	String todayStr = sdf.format(utilDate);
-	request.setAttribute("todayStr", todayStr);
+		// 테이블 리스트
+		// 	    List<List<?>> tableList = new ArrayList<>();
+		Map<Integer, List<?>> tableMap = new HashMap<>();
+		// 	    List<List<?>> tableList = new ArrayList<>();
+	
+		OrderDAO orderDAO = new OrderDAO();
+		int table_sz = 6;
+		for (int i = 0; i < table_sz; i++) {
+			// 자바 문법에 맞게 추가
+			orders = orderDAO.list(i + 1);
+	
+			if (orders != null) {
+				// 	        	tableList.add(i, orders);
+				tableMap.put(i + 1, orders);
+			}
+		}
+	
+		// 	    pageContext.setAttribute("tableList", tableList);
+		pageContext.setAttribute("tableMap", tableMap);
+		
+		// 오늘 날짜 가져오기
+		java.util.Date utilDate = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		String todayStr = sdf.format(utilDate);
+		//request.setAttribute("todayStr", todayStr);
 	%>
 
 
@@ -308,56 +306,50 @@ html, body, .container, .row, .col-md-4 {
 		</div>
 	</nav>
 
-	<!-- 모달 창 -->
+	<!-- 매출 관리 모달 창 -->
 	<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">금일 매출 관리 <%= todayStr %></h5>
+					<h5 class="modal-title">매출 관리</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
+				<!-- 날짜 선택기 -->
+                <label for="selectedDate">날짜 선택:</label>
+                <input type="text" id="selectedDate" name="selectedDate">
 			<table class="table">
-        		<thead>
-            		<tr>
-                		<th>테이블 번호</th>
-                		<th>매출 금액</th>
-            		</tr>
-        		</thead>
-        		<tbody>
-            	<c:forEach var="table" items="${tableMap}">
-				    <tr>
-				        <td>${table.key}</td>
-				        <td>
-				            <%-- 각 테이블의 매출 합계 계산 --%>
-				            <c:set var="totalSales" value="0" />
-				            <c:forEach var="order" items="${table.value}">
-				                <%-- 주문 날짜가 오늘인 경우에만 합산 --%>
-				                <c:if test="${ order.order_date eq todayStr }">
-				                    <%-- 주문 가격 합계 --%>
-				                    <c:set var="totalSales" value="${totalSales + order.price}" />
-				                </c:if>
-				            </c:forEach>
-				            <fmt:formatNumber value="${totalSales}" type="currency" currencyCode="KRW" />
-				        </td>
-				    </tr>
-				</c:forEach>
+        		<tbody id="salesTableBody">
+<%--             	<c:forEach var="table" items="${tableMap}"> --%>
+<!-- 				    <tr> -->
+<%-- 				        <td>${ table.key }</td> --%>
+<!-- 				        <td> -->
+<%-- 				            각 테이블의 매출 합계 계산 --%>
+<%-- 				            <c:set var="totalSales" value="0" /> --%>
+<%-- 				            <c:forEach var="order" items="${table.value}"> --%>
+<%-- 				                <c:if test="${order.order_date eq seletedDate}"> --%>
+<%-- 				                    주문 가격 합계 --%>
+<%-- 				                    <c:set var="totalSales" value="${totalSales + order.price}" /> --%>
+<%-- 				                </c:if> --%>
+<%-- 				            </c:forEach> --%>
+<%-- 				            <fmt:formatNumber value="${totalSales}" type="currency" currencyCode="KRW" /> --%>
+<!-- 				        </td> -->
+<!-- 				    </tr> -->
+<%-- 				</c:forEach> --%>
         		</tbody>
     		</table>
-    		<p>금일 총 매출: 
-			    <c:set var="totalDailySales" value="0" />
-			    <c:forEach var="table" items="${tableMap}">
-			        <c:forEach var="order" items="${table.value}">
-			            <%-- 주문 날짜가 오늘인 경우에만 합산 --%>
-			            <c:if test="${ order.order_date eq todayStr }">
-			                <%-- 주문 가격 합계 --%>
-			                <c:set var="totalDailySales" value="${totalDailySales + order.price}" />
-			            </c:if>
-			        </c:forEach>
-			    </c:forEach>
-			    <fmt:formatNumber value="${totalDailySales}" type="currency" currencyCode="KRW" />
-			</p>
-
+<!--     		<p>해당일 총 매출:  -->
+<%-- 			    <c:set var="totalDailySales" value="0" /> --%>
+<%-- 			    <c:forEach var="table" items="${tableMap}"> --%>
+<%-- 			        <c:forEach var="order" items="${table.value}"> --%>
+<%-- 			            <c:if test="${order.order_date eq todayStr}"> --%>
+<%-- 			                주문 가격 합계 --%>
+<%-- 			                <c:set var="totalDailySales" value="${totalDailySales + order.price}" /> --%>
+<%-- 			            </c:if> --%>
+<%-- 			        </c:forEach> --%>
+<%-- 			    </c:forEach> --%>
+<%-- 			    <fmt:formatNumber value="${totalDailySales}" type="currency" currencyCode="KRW" /> --%>
+<!-- 			</p> -->
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -368,13 +360,37 @@ html, body, .container, .row, .col-md-4 {
 	</div>
 
 	<script>
-    // 매출 관리 버튼 클릭 시 모달 띄우기
-    document.getElementById('salesBtn').addEventListener('click', function() {
-        // 모달 띄우기
-        $('#myModal').modal('show');
-    });
+	    // 매출 관리 버튼 클릭 시 모달 띄우기
+	    $('#salesBtn').click(function() {
+	    // 모달 띄우기
+	    $('#myModal').modal('show');
+	    });
+	    
+	    $(document).ready(function() {
+	        $('#selectedDate').datepicker({
+	            dateFormat: 'yy-mm-dd',
+	            onSelect: function(dateText, inst) {
+	                console.log('날짜 선택됨:', dateText);
+	                $.ajax({
+	                    url: '/Main/orderServlet',
+	                    method: 'POST',
+	                    data: { selectedDate: dateText },
+	                    success: function(response) {
+	                        // 서버에서 받은 HTML 형식의 응답을 테이블에 삽입
+	                        $('#salesTableBody').html(response);
+	                    },
+	                    error: function(xhr, status, error) {
+	                        console.error('서버 오류:', error);
+	                    }
+	                });
+	            }
+	        });
+	    });
+
+	    
+	   	   
 	</script>
-	
+
 
 	<!-- 주문 취소 모달 -->
 	<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
@@ -385,8 +401,38 @@ html, body, .container, .row, .col-md-4 {
 	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	            </div>
 	            <div class="modal-body">
-	                <!-- 여기에 주문 취소 폼 또는 내용을 추가하세요 -->
-	            </div>
+				    <c:forEach var="table" items="${tableMap}">
+				        <h4>테이블 번호: ${table.key}</h4>
+				        <table class="table">
+				            <thead>
+				                <tr>
+				                    <th>주문 번호</th>
+				                    <th>메뉴</th>
+				                    <th>수량</th>
+				                    <th>가격</th>
+				                    <th>날짜</th>
+				                    <th>주문 상태</th>
+				                    <th>취소</th>
+				                </tr>
+				            </thead>
+				            <tbody>
+				                <c:forEach var="order" items="${table.value}">
+				                    <tr>
+				                        <td>${order.order_no}</td>
+				                        <td>${order.menu_name}</td>
+				                        <td>${order.amount}</td>
+				                        <td>${order.price}</td>
+				                        <td>${order.order_date}</td>
+				                        <td>${order.status}</td>
+				                        <td>
+				                            <button type="button" class="btn btn-danger cancel" data-order-id="${order.order_no}">취소</button>
+				                        </td>
+				                    </tr>
+				                </c:forEach>
+				            </tbody>
+				        </table>
+				    </c:forEach>
+				</div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                <!-- 다른 버튼 등을 추가할 수 있습니다. -->
@@ -402,6 +448,8 @@ html, body, .container, .row, .col-md-4 {
 	        $('#cancelModal').modal('show');
 	    });
 	</script>
+	
+	
 	
 	
 	<div class="container">

@@ -12,6 +12,8 @@ public class Order {
 	private Date order_date;
 	private String status;
 	private String phone;
+	private int use_point;
+	private String payment;
 	
 	public Order() {
 		
@@ -93,12 +95,29 @@ public class Order {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+
+	public int getUse_point() {
+		return use_point;
+	}
+
+	public void setUse_point(int use_point) {
+		this.use_point = use_point;
+	}
+
+	public String getPayment() {
+		return payment;
+	}
+
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}
 
 	@Override
 	public String toString() {
 		return "Order [order_no=" + order_no + ", table_no=" + table_no + ", menu_name=" + menu_name + ", amount="
 				+ amount + ", price=" + price + ", order_date=" + order_date + ", status=" + status + ", phone=" + phone
-				+ "]";
+				+ ", use_point=" + use_point + ", payment=" + payment + "]";
 	}
 	
 	
