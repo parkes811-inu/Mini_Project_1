@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <head>
 <!-- booststrap -->
-<!-- <script src="<%= request.getContextPath() %>/static/js/bootstrap.bundle.min.js"></script> -->
+<!-- <script src="< %= request.getContextPath() %>/static/js/bootstrap.bundle.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <!-- js -->
-<!-- <script src="<%= request.getContextPath() %>/static/js/modal.js"></script> JavaScript 파일 참조 -->
+<!-- <script src="< % = request.getContextPath() %>/static/js/modal.js"></script> JavaScript 파일 참조 -->
 <script src="<%= request.getContextPath() %>/static/js/script.jsp"></script>
 </head>
 <body>
@@ -79,12 +79,25 @@
 			$('#myModal').hide()
 		})
 		
+		<%-- 세션에서 tableNum 값을 가져옵니다. --%>
+		<%
+			Integer tableNum = (Integer) session.getAttribute("tableNum");
+			if (tableNum == null) {
+			    // 세션에 tableNum 값이 없을 경우, 새로운 값을 파라미터에서 읽어와서 세션에 저장
+			    String tableNumStr = request.getParameter("tableNum");
+			    if (tableNumStr != null) {
+			        tableNum = Integer.parseInt(tableNumStr);
+			        session.setAttribute("tableNum", tableNum);
+			    }
+			}
+		%>
+		
 		// 모달 내에서 추가하기 버튼 클릭
 		$(document).ready(function() {
 	    	$('#confirm').click(function(event) {
 		        event.preventDefault();
 		        // tableNo는 application으로 등록.
-		        let tableNo = 1;
+       			let tableNo = <%= tableNum %>;
 		        let productId = $('#detail-product-id').text();
 		        let productName = $('#product-detail-name').text();
 		        let count = $('#detail-count').val();
@@ -103,7 +116,6 @@
 		            data: data,
 		            success: function(response) {
 		                alert('추가가 완료되었습니다.');
-		                //alert(tableNo);
 		                
 		                $('#myModal').hide();
 		                window.location.reload("/layout/footer2.jsp");

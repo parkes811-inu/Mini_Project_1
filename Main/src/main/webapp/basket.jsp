@@ -19,16 +19,23 @@
 
 <body>
 <%
-	int tableNum = 1;
+	//세션에서 tableNum 값을 가져옵니다. 세션에 값이 없을 경우를 대비하여 기본값을 설정할 수 있습니다.
+	Integer tableNumObj_basket = (Integer) request.getSession().getAttribute("tableNum");
+	int tableNum1 = 0; // 기본값 설정
+	
+	if (tableNumObj_basket != null) {
+	    tableNum1 = tableNumObj_basket.intValue(); // intValue() 메소드를 사용하여 int로 변환
+	}
+	
 	CartDAO cartDao2 = new CartDAO();
-	List<Cart> uniqueCartList = cartDao2.getUniqueCartList(tableNum); // 중복 제거된 장바구니 목록 가져오기
+	List<Cart> uniqueCartList = cartDao2.getUniqueCartList(tableNum1); // 중복 제거된 장바구니 목록 가져오기
 	
 	if(uniqueCartList.isEmpty()) {
 %>
 		<!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->	
 	  <div class="basketContainer">
 	     <img src="static/img/emptyBasket.jpg" alt="Empty cart"> <!-- 위 경로에 이미지를 추가해주세요 -->
-	     <a href="modal_menu.jsp">더 담으러가기</a>
+	     <a href="modal_menu.jsp?tableNum=<%=session.getAttribute("tableNum")%>">더 담으러가기</a>
 	  </div>
 <%		
 	}
@@ -39,7 +46,7 @@
 	<%@ include file="layout/footer2.jsp" %>
 	<div class="basket">
 	  <h1 class="title">장바구니</h1>
-	  <h2 class="subtitle"><%= tableNum %> 번 테이블 주문서</h2>
+	  <h2 class="subtitle"><%= tableNum1 %> 번 테이블 주문서</h2>
   <% 
       for (Cart cartItem : uniqueCartList) {
        // uniqueCartList를 반복하며 각 항목을 표시
@@ -64,8 +71,7 @@
 <script>
 $(document).ready(function() {
     $('.quantity-decrease').click(function() {
-    	// tableNum을 어떻게 받아올건지 ?
-        var tableNum = 1; 
+ 		var tableNum = <%= tableNum1 %>;
         var productName = $(this).data('productId'); // 제품 이름을 가져옵니다.
         //console.log(productName);
         var quantitySpan = $(this).siblings('.quantity');
@@ -102,7 +108,7 @@ $(document).ready(function() {
     });
 
     $('.quantity-increase').click(function() {
-    	var tableNum = 1; 
+    	var tableNum = <%= tableNum1 %>; 
     	var productName = $(this).data('productId'); // 제품 이름을 가져옵니다.
     	var quantitySpan = $(this).siblings('.quantity');
         var currentQuantity = parseInt(quantitySpan.text());

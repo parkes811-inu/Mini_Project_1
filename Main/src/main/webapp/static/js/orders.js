@@ -58,7 +58,7 @@ document.getElementById('cardButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp';
+                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -66,7 +66,7 @@ document.getElementById('cardButton').addEventListener('click', function() {
                     // checkUserPoints.jsp에 전송되는 데이터
 					xhrAdd.send("phoneNum=" + phoneNumValue + "&pointsToAdd=" + pointsToAdd);
                 }
-            
+        
             // 번호가 이미 존재 하는 경우
             else {
 				// 기존 포인트 + 적립할 포인트 
@@ -91,7 +91,7 @@ document.getElementById('cardButton').addEventListener('click', function() {
 					};
 					
                     // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                  	window.location.href = 'modal_menu.jsp';
+                  	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
 					xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                 	}
                 };
@@ -158,7 +158,7 @@ document.getElementById('cashButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp';
+                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -189,7 +189,7 @@ document.getElementById('cashButton').addEventListener('click', function() {
 					};
 					
                     // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                  	window.location.href = 'modal_menu.jsp';
+                  	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
 					xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                 	}
                 };
@@ -255,7 +255,7 @@ document.getElementById('pointButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp';
+                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -297,7 +297,7 @@ document.getElementById('pointButton').addEventListener('click', function() {
 								}
 								
 	                            // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                              	window.location.href = 'modal_menu.jsp';
+                              	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
 	                        }
 	                    };
 	                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);
@@ -311,8 +311,11 @@ document.getElementById('pointButton').addEventListener('click', function() {
 
 /* 결제 취소 이벤트 */
 document.getElementById('cancelButton').addEventListener('click', function() {
+  var tableNum = document.getElementById('data-tableNo').textContent;
+  // " 번 테이블 주문서" 문자열을 제거하고 숫자 부분만 추출
+  tableNum = tableNum.replace(/[^0-9]/g, '');
   /* 결제 취소 시 장바구니 화면으로 이동 */
-  window.location.href = 'basket.jsp';
+  window.location.href = 'basket.jsp?tableNum=' + tableNum;
 });
 
 
