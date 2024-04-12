@@ -133,7 +133,7 @@ COMMENT ON COLUMN CART.AMOUNT IS '주문수량';
 COMMENT ON COLUMN CART.PRICE IS '가격';
 
 -- #######################################################################################################
--- 4. ORDERS 테이블 생성
+-- 4. ORDERS 테이블 정의
 -- 주문 내역
 -- ORDER_NO = AI(주문 번호), TABLE_NO = 테이블 번호, MENU_NAME = 메뉴 이름, AMOUNT = 제품 수량,
 -- PRICE = 가격, ORDER_DATE = 주문 일자, STATUS = 주문 상태, PHONE = 고객 핸드폰 번호, USE_POINT = 사용 포인트,
@@ -171,3 +171,79 @@ NOPARALLEL;
 COMMENT ON COLUMN ORDERS.CLASSIFICATION IS '고객 분류';
 
 -- #######################################################################################################
+-- ORDERS 시퀀스 정의
+-- 주문 번호 입력용 시퀀스
+CREATE SEQUENCE order_no_seq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER orders_before_insert
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+  SELECT order_no_seq.NEXTVAL
+  INTO :new.order_no
+  FROM dual;
+END;
+/
+
+-- #######################################################################################################
+-- 5. PERSISTENT_LOGINS 테이블 정의
+-- 자동 로그인
+-- P_NO = 자동 로그인 번호 (PK),
+-- ID = 자동 로그인용 ID,
+-- TOKEN = 발급 받을 토큰 저장,
+-- REG_DATE = 신규 발급일,
+-- UPD_DATE = 발급 갱신일
+
+CREATE TABLE PERSISTENT_LOGINS 
+(
+  P_NO NUMBER NOT NULL 
+, ID VARCHAR2(255 BYTE) NOT NULL 
+, TOKEN VARCHAR2(255 BYTE) NOT NULL 
+, REG_DATE DATE DEFAULT SYSDATE NOT NULL 
+, UPD_DATE DATE DEFAULT SYSDATE NOT NULL 
+, CONSTRAINT PK_PERSISTENT_LOGINS PRIMARY KEY 
+  (
+    P_NO 
+  )
+  USING INDEX 
+  (
+      CREATE UNIQUE INDEX PK_PERSISTENT_LOGINS ON PERSISTENT_LOGINS (P_NO ASC) 
+      LOGGING 
+      TABLESPACE USERS 
+      PCTFREE 10 
+      INITRANS 2 
+      STORAGE 
+      ( 
+        INITIAL 65536 
+        NEXT 1048576 
+        MINEXTENTS 1 
+        MAXEXTENTS UNLIMITED 
+        BUFFER_POOL DEFAULT 
+      ) 
+      NOPARALLEL 
+  )
+  ENABLE 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+-- #######################################################################################################
+-- PERSISTENT_LOGINS 시퀀스
+-- 자동 로그인용 시퀀스
+
+CREATE SEQUENCE SEQ_PER_LOGIN INCREMENT BY 1 MAXVALUE 1000000 MINVALUE 1 CACHE 20;
