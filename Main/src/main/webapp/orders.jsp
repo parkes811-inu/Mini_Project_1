@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/style.css"> 
 <title>결제</title>
@@ -34,10 +35,10 @@
 	if(cartList.isEmpty()) {
 %>
 	  <!-- 배달의 민족 장바구니를 참고해서 꾸며주세요. -->   
-	  <div class="basketContainer">
-	     <img src="static/img/emptyBasket.jpg" alt="Empty cart"> <!-- 위 경로에 이미지를 추가해주세요 -->
-	     <a href="modal_menu.jsp?tableNum=<%=session.getAttribute("tableNum")%>">더 담으러가기</a>
-	  </div>
+      <div class="container">
+        <img alt="basket" src="static/img/emptyBasket.jpg" >
+    	<a href="modal_menu.jsp?tableNum=<%=session.getAttribute("tableNum")%>">더 담으러가기</a>
+      </div>
 <%		 
 
 	}
