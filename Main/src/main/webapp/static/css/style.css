@@ -13,11 +13,19 @@
 }
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 40% auto; /* 기본 마진 값 설정 */
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
 }
+
+@media screen and (min-width: 414px) {
+    /* 핸드폰 화면 크기 이상일 때 적용되는 스타일 */
+    .modal-content {
+        margin: 15% auto; /* 핸드폰 화면 크기에서 적용할 마진 값 */
+    }
+}
+
 .close {
     color: #aaa;
     float: right;
@@ -35,6 +43,7 @@
     height: 100px;
     cursor: pointer;
 }
+
 
 
 /* ======================================================================== */
@@ -58,6 +67,21 @@
         margin-bottom: 10px; /* 아래쪽으로 10px의 마진을 추가하여 각 버튼 사이에 간격을 만듭니다. */
     }
 }
+
+.basket {
+
+    min-height: 100vh; /* 최소 높이를 화면 전체 높이로 설정 */
+}
+
+.basket img {
+    width: 200px; /* 이미지의 너비를 늘립니다. */
+    height: auto; /* 이미지의 높이를 자동으로 설정하여 비율을 유지합니다. */
+}
+
+.basket h1, .basket h2 {
+    font-size: 24px; /* 텍스트의 폰트 크기를 키웁니다. */
+}
+
 
 /* ==================================================================================================  */
 /* 주변 여백을 제거 */ 
@@ -132,8 +156,8 @@
 }
 
 .info h1 {
-    margin-top: 0; /* 위쪽 마진을 제거하여 페이지 맨 위로 이동합니다. */
-    padding-top: 30px !important;  /* 페이지 맨 위와 조금 떨어지게 패딩을 추가합니다. */	
+    margin-top: -70px; /* 위쪽 마진을 제거하여 페이지 맨 위로 이동합니다. */
+    padding-top: 0px !important;  /* 페이지 맨 위와 조금 떨어지게 패딩을 추가합니다. */	
 }
 
 .info img {
@@ -191,6 +215,7 @@
 .order-summary p {
     margin: 0; /* 기본 마진 제거 */
     padding: 0 10px; /* 내부 패딩 */
+    box-shadow: none;
 }
 /* 수량과 금액 정보를 포함하는 섹션 */
     .order-info {
@@ -382,8 +407,8 @@ body {
 }
 
 .menu-item img {
-  width: 50px; /* 이미지의 크기를 설정합니다. */
-  height: 50px; /* 이미지의 크기를 설정합니다. */
+  width: 160px; /* 이미지의 크기를 설정합니다. */
+  height: 160px; /* 이미지의 크기를 설정합니다. */
   margin-left: 10px; /* 이미지와 텍스트 사이의 여백을 설정합니다. */
   border-radius: 5px; /* 이미지의 모서리를 둥글게 처리합니다. */
 }
@@ -399,5 +424,30 @@ body {
 }
 
 /* ======================================================================== */
+/* ========== 빈 장바구니 ========== */
+.container {
+    text-align: center;
+    padding: 50px 0;
+    /* background-image: url("/static/img/cart.jpg"); */
+    background-size: cover;
+}
 
-/* 상단 메뉴 슬라이드 애니메이셔 */
+.h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.a:hover {
+    background-color: #0056b3;
+}
