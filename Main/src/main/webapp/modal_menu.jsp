@@ -4,6 +4,8 @@
 <%@ page import="store.DAO.ProductDAO" %>
 <%@ page import="store.DTO.Product" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.HashSet"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -22,6 +24,13 @@
 </head>
 <body>
 <%
+	//  사용자로부터 받은 tableNum 파라미터 값을 읽어옵니다.
+    String tableNumStr9 = request.getParameter("tableNum");
+    if (tableNumStr9 != null) {
+        int tableNum9 = Integer.parseInt(tableNumStr9);
+        session.setAttribute("tableNum", tableNum9);
+    }
+	
 	ArrayList<Product> productList = new ArrayList<>();
 	String category = "메인";
 	

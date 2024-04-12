@@ -40,7 +40,7 @@ public class JDBConnection {
 			// getConnection() 메소드로 DB에 연결 요청하고 생성된 Connection 객체를 반환받는다.
 			con = DriverManager.getConnection(url, id, pw);
 			
-			System.out.println("DB 연결 성공");
+			// System.out.println("DB 연결 성공");
 		} catch (Exception e) {
 			System.err.println("DB 연결 실패");
 			e.printStackTrace();

@@ -21,9 +21,9 @@
 	<!-- 상단 네비게이션 바 -->
 <header class="header-nav">
     <nav>
-        <a href="modal_menu.jsp" class="nav-item">메뉴</a>
-        <a href="sides.jsp" class="nav-item">사이드</a>
-        <a href="drinks.jsp" class="nav-item">음료 & 주류</a>
+        <a href="modal_menu.jsp?tableNum=${ tableNum }" class="nav-item">메뉴</a>
+        <a href="sides.jsp?tableNum=${ tableNum }" class="nav-item">사이드</a>
+        <a href="drinks.jsp?tableNum=${ tableNum }" class="nav-item">음료 & 주류</a>
     </nav>
 </header>
 
