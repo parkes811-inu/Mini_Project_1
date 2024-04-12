@@ -1,0 +1,249 @@
+-- 1. PRODUCT 테이블 정의
+-- 제품 정보 
+-- PRODUCT_ID = 제품 번호, NAME = 제품 명, PRICE = 가격, CATEGORY = 제품 분류 카테고리
+-- DESCRIPTION = 제품 설명, IMAGE_PATH = 제품 이미지 저장 경로
+CREATE TABLE PRODUCT 
+(
+  PRODUCT_ID VARCHAR2(100 BYTE) NOT NULL 
+, NAME VARCHAR2(200 BYTE) 
+, PRICE NUMBER 
+, CATEGORY VARCHAR2(100 BYTE) 
+, DESCRIPTION VARCHAR2(2000 BYTE) 
+, IMAGE_PATH VARCHAR2(1000 BYTE) 
+, CONSTRAINT MENU_PK PRIMARY KEY 
+  (
+    PRODUCT_ID 
+  )
+  USING INDEX 
+  (
+      CREATE UNIQUE INDEX MENU_PK ON PRODUCT (PRODUCT_ID ASC) 
+      LOGGING 
+      TABLESPACE USERS 
+      PCTFREE 10 
+      INITRANS 2 
+      STORAGE 
+      ( 
+        INITIAL 65536 
+        NEXT 1048576 
+        MINEXTENTS 1 
+        MAXEXTENTS UNLIMITED 
+        BUFFER_POOL DEFAULT 
+      ) 
+      NOPARALLEL 
+  )
+  ENABLE 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+-- #######################################################################################################
+-- 2. USERS 테이블 정의
+-- 사용자 정보
+-- PHONE = 핸드폰 번호, POINT = 고객 포인트, JOIN_DATE = 가입 일자
+CREATE TABLE USERS 
+(
+  PHONE VARCHAR2(100 BYTE) NOT NULL 
+, POINT VARCHAR2(100 BYTE) DEFAULT 0 
+, JOIN_DATE DATE DEFAULT sysdate 
+, CONSTRAINT USERS_PK PRIMARY KEY 
+  (
+    PHONE 
+  )
+  USING INDEX 
+  (
+      CREATE UNIQUE INDEX USERS_PK ON USERS (PHONE ASC) 
+      LOGGING 
+      TABLESPACE USERS 
+      PCTFREE 10 
+      INITRANS 2 
+      STORAGE 
+      ( 
+        INITIAL 65536 
+        NEXT 1048576 
+        MINEXTENTS 1 
+        MAXEXTENTS UNLIMITED 
+        BUFFER_POOL DEFAULT 
+      ) 
+      NOPARALLEL 
+  )
+  ENABLE 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+-- #######################################################################################################
+-- 3. CART 테이블 정의
+-- 음식을 담을 임시 장바구니 테이블
+-- TABLE_NO = 테이블 번호, USER_ID = 고객 핸드폰 번호, PRODUCT_NAME = 제품 명,
+-- AMOUNT = 장바구니에 담긴 제품 별 수량, PRICE = 장바구니에 담긴 제품 별 총 가격
+CREATE TABLE CART 
+(
+  TABLE_NO NUMBER 
+, USER_ID VARCHAR2(200 BYTE) 
+, PRODUCT_NAME VARCHAR2(200 BYTE) NOT NULL 
+, AMOUNT NUMBER DEFAULT 1 NOT NULL 
+, PRICE NUMBER NOT NULL 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+COMMENT ON COLUMN CART.TABLE_NO IS '테이블번호';
+COMMENT ON COLUMN CART.USER_ID IS '고객핸드폰번호';
+COMMENT ON COLUMN CART.PRODUCT_NAME IS '메뉴이름';
+COMMENT ON COLUMN CART.AMOUNT IS '주문수량';
+COMMENT ON COLUMN CART.PRICE IS '가격';
+
+-- #######################################################################################################
+-- 4. ORDERS 테이블 정의
+-- 주문 내역
+-- ORDER_NO = AI(주문 번호), TABLE_NO = 테이블 번호, MENU_NAME = 메뉴 이름, AMOUNT = 제품 수량,
+-- PRICE = 가격, ORDER_DATE = 주문 일자, STATUS = 주문 상태, PHONE = 고객 핸드폰 번호, USE_POINT = 사용 포인트,
+-- PAYMENT = 결제 방식(카드, 현금, 포인트 사용), CLASSIFICATION = 고객 구분(신규, 기존) 
+CREATE TABLE ORDERS 
+(
+  ORDER_NO NUMBER NOT NULL 
+, TABLE_NO NUMBER NOT NULL 
+, MENU_NAME VARCHAR2(200 BYTE) 
+, AMOUNT NUMBER 
+, PRICE NUMBER 
+, ORDER_DATE DATE 
+, STATUS VARCHAR2(200 BYTE) 
+, PHONE VARCHAR2(200 BYTE) 
+, USE_POINT NUMBER DEFAULT 0 
+, PAYMENT VARCHAR2(200 BYTE) 
+, CLASSIFICATION VARCHAR2(100 BYTE) 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+COMMENT ON COLUMN ORDERS.CLASSIFICATION IS '고객 분류';
+
+-- #######################################################################################################
+-- ORDERS 시퀀스 정의
+-- 주문 번호 입력용 시퀀스
+CREATE SEQUENCE order_no_seq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE OR REPLACE TRIGGER orders_before_insert
+BEFORE INSERT ON orders
+FOR EACH ROW
+BEGIN
+  SELECT order_no_seq.NEXTVAL
+  INTO :new.order_no
+  FROM dual;
+END;
+/
+
+-- #######################################################################################################
+-- 5. PERSISTENT_LOGINS 테이블 정의
+-- 자동 로그인
+-- P_NO = 자동 로그인 번호 (PK),
+-- ID = 자동 로그인용 ID,
+-- TOKEN = 발급 받을 토큰 저장,
+-- REG_DATE = 신규 발급일,
+-- UPD_DATE = 발급 갱신일
+
+CREATE TABLE PERSISTENT_LOGINS 
+(
+  P_NO NUMBER NOT NULL 
+, ID VARCHAR2(255 BYTE) NOT NULL 
+, TOKEN VARCHAR2(255 BYTE) NOT NULL 
+, REG_DATE DATE DEFAULT SYSDATE NOT NULL 
+, UPD_DATE DATE DEFAULT SYSDATE NOT NULL 
+, CONSTRAINT PK_PERSISTENT_LOGINS PRIMARY KEY 
+  (
+    P_NO 
+  )
+  USING INDEX 
+  (
+      CREATE UNIQUE INDEX PK_PERSISTENT_LOGINS ON PERSISTENT_LOGINS (P_NO ASC) 
+      LOGGING 
+      TABLESPACE USERS 
+      PCTFREE 10 
+      INITRANS 2 
+      STORAGE 
+      ( 
+        INITIAL 65536 
+        NEXT 1048576 
+        MINEXTENTS 1 
+        MAXEXTENTS UNLIMITED 
+        BUFFER_POOL DEFAULT 
+      ) 
+      NOPARALLEL 
+  )
+  ENABLE 
+) 
+LOGGING 
+TABLESPACE USERS 
+PCTFREE 10 
+INITRANS 1 
+STORAGE 
+( 
+  INITIAL 65536 
+  NEXT 1048576 
+  MINEXTENTS 1 
+  MAXEXTENTS UNLIMITED 
+  BUFFER_POOL DEFAULT 
+) 
+NOCOMPRESS 
+NO INMEMORY 
+NOPARALLEL;
+
+-- #######################################################################################################
+-- PERSISTENT_LOGINS 시퀀스
+-- 자동 로그인용 시퀀스
+
+CREATE SEQUENCE SEQ_PER_LOGIN INCREMENT BY 1 MAXVALUE 1000000 MINVALUE 1 CACHE 20;
