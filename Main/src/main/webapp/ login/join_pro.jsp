@@ -1,5 +1,5 @@
-<%@page import="shop.Service.UserServiceImpl"%>
-<%@page import="shop.Service.UserService"%>
+<%@page import="Service.UserServiceImpl"%>
+<%@page import="Service.UserService"%>
 <%@page import="shop.DTO.Users"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
