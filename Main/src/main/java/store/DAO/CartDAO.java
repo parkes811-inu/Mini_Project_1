@@ -237,20 +237,12 @@ public class CartDAO extends JDBConnection {
 
 	/*
 	 * 2024-04-11 : 박은서
-	 * 결제 완료 후 장바구니 비우기
-	 */
-	public boolean initBasket(int tableNum) {
-		// cart 테이블은 임시 테이블이니까, 
-		// 해당 테이블에 있는 데이터 삭제
-		return true;
-	}
-	
-	/*
-	 * 2024-04-11 : 박은서
 	 * 결제 완료 후 장바구니 내역 orders 테이블에 저장하기
 	 * 
+	 * 04-12 : 박은서
+	 * orders 테이블에 신규 고객과 기존 고객 분류를 위한 customerStatus 추가
 	 */
-	public boolean complete(int tableNo, int point, String payment, String phoneNum) {
+	public boolean complete(int tableNo, int point, String payment, String phoneNum, String customerStatus) {
 	    PreparedStatement psmtSelect = null;
 	    PreparedStatement psmtInsert = null;
 	    PreparedStatement psmtDelete = null;
@@ -271,8 +263,8 @@ public class CartDAO extends JDBConnection {
 	        
 	        while (rs.next()) {
 	            // 조회된 각 항목을 orders 테이블에 삽입
-	            String sqlInsert = "INSERT INTO orders (TABLE_NO, MENU_NAME, AMOUNT, PRICE, ORDER_DATE, STATUS, USE_POINT, PAYMENT, PHONE) "
-	            					+ "VALUES (?, ?, ?, ?, SYSDATE, 'PAY OK', ?, ?, ?)";
+	            String sqlInsert = "INSERT INTO orders (TABLE_NO, MENU_NAME, AMOUNT, PRICE, ORDER_DATE, STATUS, USE_POINT, PAYMENT, PHONE, CLASSIFICATION) "
+	            					+ "VALUES (?, ?, ?, ?, SYSDATE, 'PAY OK', ?, ?, ?, ?)";
 	            psmtInsert = con.prepareStatement(sqlInsert);
 	            psmtInsert.setInt(1, tableNo);
 	            psmtInsert.setString(2, rs.getString("product_name"));
@@ -281,7 +273,8 @@ public class CartDAO extends JDBConnection {
 	            psmtInsert.setInt(5, point);
 	            psmtInsert.setString(6, payment);
 	            psmtInsert.setString(7, phoneNum);
-	            
+	            psmtInsert.setString(8, customerStatus);
+
 	            psmtInsert.executeUpdate();
 	        }
 
