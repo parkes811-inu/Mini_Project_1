@@ -15,6 +15,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+     /* 외부 컨테이너에 대한 패딩 */
+    .product-container {
+        padding: 20px;
+    }
+
+    /* 각 제품 항목의 스타일 */
+    .product-item {
+        display: inline-block;
+        width: calc(33.33% - 20px); /* 3개씩 나열되도록 너비 지정 */
+        margin: 10px;
+        padding: 20px; /* 내부 패딩 추가 */
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    .product-item img {
+    width: auto; /* 이미지의 너비를 100px로 설정합니다. */
+    max-width: 90%;
+    height: auto; /* 이미지의 높이를 100px로 설정합니다. */
+    max-height: 90%;    }
+
+    .product-item h4 {
+        margin-top: 5px;
+    }
+	</style>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>주문 화면</title>
     <!-- 이정용 : style.css 파일에 모달화면 css를 홍콩반점과 같이 꾸며주세요. -->
