@@ -473,7 +473,7 @@ html, body, .container, .row, .col-md-4 {
 									<c:set var="totalPrice" value="0" />
 									<c:forEach var="order" items="${ table.value }">
 										<%-- 주문 상태가 'pay ok'인 경우에만 화면에 표시 --%>
-										<c:if test="${ order.status eq 'pay ok' }">
+										<c:if test="${ order.status eq 'pay ok' || order.status eq 'PAY OK' }">
 											<div style="display: flex; justify-content: space-between;">
 												<p class="card-text text-dark">
 													<!-- 반복문으로 menu_name 같은게 나오면 name 중복 제거 후 amount 만큼 더해서 출력  -->
