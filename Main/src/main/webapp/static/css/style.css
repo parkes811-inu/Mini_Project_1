@@ -432,6 +432,15 @@ body {
     background-size: cover;
 }
 
+.container img {
+    display: block; /* 이미지를 블록 요소로 만들어 줄 바꿈이 생기게 합니다. */
+    margin: 20px auto; /* 이미지를 수평 중앙에 위치시킵니다. */
+    max-width: 100%; /* 이미지의 최대 너비를 설정합니다. */
+    height: auto; /* 이미지의 높이를 자동으로 조정합니다. */
+    width: 375px; /* iPhone 12 Pro의 너비에 맞추어 이미지의 너비를 설정합니다. */
+}
+
+
 .h1 {
     font-size: 24px;
     font-weight: bold;
