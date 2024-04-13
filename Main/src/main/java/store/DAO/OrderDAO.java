@@ -1,5 +1,7 @@
 package store.DAO;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,9 @@ public class OrderDAO extends JDBConnection {
 		// SQL 작성
 		String sql = " SELECT * " 
 				   + " FROM ORDERS "
-				   + " WHERE table_no = ? ";
+				   + " WHERE table_no = ? "
+				   + " AND status != 'CANCELED' "
+				   + " AND status != 'COMPLETE' ";
 		try {
 			// 쿼리(SQL) 실행 객체 생성 - Statement (stmt)
 			// stmt = con.createStatement();
@@ -126,7 +130,7 @@ public Order select(int no) {
 		int result = 0;
 		
 		String sql = " UPDATE ORDERS "
-				   + " SET STATUS = 'complete' "
+				   + " SET STATUS = 'COMPLETE' "
 				   + " WHERE table_no = ? ";
 		
 		try {
@@ -142,36 +146,73 @@ public Order select(int no) {
 	}
 	
 	
-	public int delete(int no) {
-		int result = 0;		// 결과 : 적용된 데이터 건수
-		
-		String sql = " DELETE FROM ORDERS "
-				   + " WHERE ORDER_NO = ? "
-				   + " AND TABLE_NO = ? ";
-		
-		try {
-			psmt = con.prepareStatement(sql);	// 쿼리 실행 객체 생성
-			psmt.setInt( 1, no );
-			psmt.setInt( 2, no );									
-			
-			result = psmt.executeUpdate();		// SQL 실행 요청, 적용된 데이터 개수를 받아온다.
-												// 게시글 1개 적용 성공 시, result : 1
-												// 				실패 시, result : 0
-			// executeUpdate()
-			// : SQL (INSERT, UPDATE, DELETE)을 실행하고 적용된 데이터 개수를 int 타입으로 반환
-		} catch (SQLException e) {
-			System.err.println("주문 삭제 시, 예외 발생");
-			e.printStackTrace();
-		}
-		return result;
+	@SuppressWarnings("resource")
+	public int delete(int orderNo) {
+	    int result = 0;  // 결과: 적용된 데이터 건수
+
+	    // 주문 상태를 'CANCELED'로 업데이트
+	    String sql = " UPDATE ORDERS "
+	    			+ " SET status = 'CANCELED' "
+	    			+ " WHERE order_no = ? ";
+	    
+	    PreparedStatement psmt = null; // SQL 실행 객체
+	    ResultSet rs = null; // 조회 결과 처리 객체
+
+	    try {
+	        psmt = con.prepareStatement(sql);
+	        psmt.setInt(1, orderNo);
+	        result = psmt.executeUpdate();
+
+	        if (result > 0) {
+	            // 롤백할 포인트 계산
+	            String pointSQL = " SELECT a.price * 0.1 - a.use_point AS rollbackPoint, a.phone "
+	            				+ " FROM ORDERS a, USERS b "
+	            				+ " WHERE a.phone = b.phone "
+	            				+ " AND a.status = 'CANCELED' "
+	            				+ " AND a.order_no = ? ";
+	            
+	            psmt = con.prepareStatement(pointSQL);
+	            psmt.setInt(1, orderNo);
+	            rs = psmt.executeQuery();
+
+	            if (rs.next()) {
+	                int rollbackPoint = rs.getInt("rollbackPoint");
+	                String phone = rs.getString("phone");
+
+	                // 사용자의 포인트 업데이트
+	                String update = " UPDATE USERS "
+	                				+ " SET point = point - ? "
+	                				+ " WHERE phone = ? ";
+	                psmt = con.prepareStatement(update);
+	                psmt.setInt(1, rollbackPoint);
+	                psmt.setString(2, phone);
+	                psmt.executeUpdate();
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("주문 삭제 시, 예외 발생");
+	        e.printStackTrace();
+	    } finally {
+	        // 자원 해제
+	        try {
+	            if (rs != null) rs.close();
+	            if (psmt != null) psmt.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return result;
 	}
 
 	public List<Order> getOrdersByDate(String selectedDate) {
 		
 		List<Order> orderList = new ArrayList<Order>();
 		
-		String sql = "SELECT * FROM ORDERS "
-	               + "WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD')";
+		String sql = " SELECT * "
+					+ " FROM ORDERS "
+					+ " WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD') "
+					+ " AND status != 'CANCELED' ";
 		
 		try {
 			psmt = con.prepareStatement(sql);
