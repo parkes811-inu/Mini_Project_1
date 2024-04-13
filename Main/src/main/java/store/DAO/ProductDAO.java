@@ -65,7 +65,7 @@ public class ProductDAO extends JDBConnection {
 
 	        while (rs.next()) {
 	            Product product = new Product();
-	            product.setProductId(rs.getString("product_id"));
+	            // product.setProductId(rs.getString("product_id"));
 	            product.setName(rs.getString("name"));
 	            product.setPrice(rs.getInt("price"));
 	            product.setDescription(rs.getString("description"));
@@ -84,7 +84,31 @@ public class ProductDAO extends JDBConnection {
 	    return products;
 	}
 
-	
+	/*
+	 * 2024-04-13 : 박은서
+	 * 파일업로드 기능 추가를 위한 query 구현
+	 * 
+	 */
+	 public int addProduct(Product product) {
+	        int result = 0;
+	        String sql = " INSERT INTO product (name, description, category, price, image_path) "
+	        		+ " VALUES (?, ?, ?, ?, ?) ";
+
+	        try (PreparedStatement psmt = con.prepareStatement(sql)) {
+	            psmt.setString(1, product.getName());
+	            psmt.setString(2, product.getDescription());
+	            psmt.setString(3, product.getCategory());
+	            psmt.setInt(4, product.getPrice());
+	            psmt.setString(5, product.getImagePath());
+
+	            result = psmt.executeUpdate();
+	        } catch (SQLException e) {
+	            System.err.println("제품 추가 중 오류 발생");
+	            e.printStackTrace();
+	        }
+
+	        return result;
+	    }
 }
 
 

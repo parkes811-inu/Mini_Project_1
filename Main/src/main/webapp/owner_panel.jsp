@@ -301,11 +301,18 @@ html, body, .container, .row, .col-md-4 {
 					<li class="nav-item">
 						<button id="cancelBtn" class="btn btn-lg btn-dark ms-3" type="button">주문 취소</button>
 					</li>
+					<li class="nav-item">
+						<button id="addMenuBtn" class="btn btn-lg btn-dark ms-3" type="button">메뉴 추가</button>
+					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
+	<script type="text/javascript">
+	 $('#addMenuBtn').click(function() {
+	        window.location.href = "addMenu.jsp"; // 페이지 이동을 위해 'location'을 사용
+     });
+  	</script>
 	<!-- 매출 관리 모달 창 -->
 	<div class="modal fade" id="myModal" tabindex="-1" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
