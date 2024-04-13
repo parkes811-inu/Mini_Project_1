@@ -362,8 +362,8 @@ html, body, .container, .row, .col-md-4 {
 	<script>
 	    // 매출 관리 버튼 클릭 시 모달 띄우기
 	    $('#salesBtn').click(function() {
-	    // 모달 띄우기
-	    $('#myModal').modal('show');
+	   		 // 모달 띄우기
+	    	$('#myModal').modal('show');
 	    });
 	    
 	    $(document).ready(function() {
@@ -401,6 +401,7 @@ html, body, .container, .row, .col-md-4 {
 	        yearSuffix: '년'
 	        }); 
 	</script>
+	
 
 	<!-- 주문 취소 모달 -->
 	<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
@@ -435,7 +436,7 @@ html, body, .container, .row, .col-md-4 {
 				                        <td>${order.order_date}</td>
 				                        <td>${order.status}</td>
 				                        <td>
-				                            <button type="button" class="btn btn-danger cancel" data-order-id="${order.order_no}">취소</button>
+				                            <button type="button" class="btn btn-danger cancel" id="btn-cancel" data-order-id="${order.order_no}">취소</button>
 				                        </td>
 				                    </tr>
 				                </c:forEach>
@@ -450,7 +451,30 @@ html, body, .container, .row, .col-md-4 {
 	        </div>
 	    </div>
 	</div>
-	
+	<script>
+	// 2024-04-13 : 박은서 
+	$(document).ready(function() {
+	    $('.cancel').click(function() {
+	    	
+	        var orderId = $(this).data('order-id');  // 버튼에서 order-id 데이터를 가져옵니다.
+	        
+	        // AJAX 요청을 서버에 보냅니다.
+	        $.ajax({
+	            url: 'deleteOrder.jsp',  // 요청을 처리할 서버의 URL
+	            type: 'POST',            // 데이터를 서버로 보내는 방법
+	            data: {orderNo: orderId},  // 서버로 보낼 데이터
+	            success: function(response) {  // 요청이 성공적으로 완료되면 실행되는 함수
+	                // alert('주문번호 ' + orderId + '가 성공적으로 취소되었습니다.');
+	                window.location.reload();  // 페이지를 리로드하여 변경사항을 반영
+	            },
+	            error: function() {  // 요청이 실패하면 실행되는 함수
+	                alert('주문 취소에 실패하였습니다.');
+	            }
+	        });
+	    });
+	});
+	</script>
+
 	<script>
     // 주문 취소 버튼 클릭 시 모달 띄우기
 	    document.getElementById('cancelBtn').addEventListener('click', function() {
