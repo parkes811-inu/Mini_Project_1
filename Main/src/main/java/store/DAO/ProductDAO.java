@@ -91,8 +91,8 @@ public class ProductDAO extends JDBConnection {
 	 */
 	 public int addProduct(Product product) {
 	        int result = 0;
-	        String sql = " INSERT INTO product (name, description, category, price, image_path) "
-	        		+ " VALUES (?, ?, ?, ?, ?) ";
+	        String sql = " INSERT INTO product (product_id, name, description, category, price, image_path) "
+	        		+ " VALUES (UUID(), ?, ?, ?, ?, ?) ";
 
 	        try (PreparedStatement psmt = con.prepareStatement(sql)) {
 	            psmt.setString(1, product.getName());

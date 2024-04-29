@@ -17,7 +17,7 @@ public class OrderDAO extends JDBConnection {
 
 		// SQL 작성
 		String sql = " SELECT * " 
-				   + " FROM ORDERS "
+				   + " FROM orders "
 				   + " WHERE table_no = ? "
 				   + " AND status != 'CANCELED' "
 				   + " AND status != 'COMPLETE' ";
@@ -67,7 +67,7 @@ public Order select(int no) {
 		
 		// SQL 작성
 		String sql = " SELECT * "
-				   + " FROM ORDERS "
+				   + " FROM orders "
 				   + " WHERE ORDER_NO = ? ";
 		try {
 			// 쿼리(SQL) 실행 객체 생성 - PreparedStatement (psmt)
@@ -101,7 +101,7 @@ public Order select(int no) {
 	public int insert(Order order) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
 		
-		String sql = " INSERT INTO ORDERS (ORDER_NO, TABLE_NO, MENU_NAME, AMOUNT, PRICE, sysdate, STATUS, PHONE) "
+		String sql = " INSERT INTO orders (ORDER_NO, TABLE_NO, MENU_NAME, AMOUNT, PRICE, sysdate, STATUS, PHONE) "
 				   + " VALUES(SEQ_ORDER.NEXTVAL, ?, ?, ?, ?, ?, ?, ? ) ";
 		
 		try {
@@ -129,7 +129,7 @@ public Order select(int no) {
 	public int statusUpdate(int table_no) {
 		int result = 0;
 		
-		String sql = " UPDATE ORDERS "
+		String sql = " UPDATE orders "
 				   + " SET STATUS = 'COMPLETE' "
 				   + " WHERE table_no = ? ";
 		
@@ -151,7 +151,7 @@ public Order select(int no) {
 	    int result = 0;  // 결과: 적용된 데이터 건수
 
 	    // 주문 상태를 'CANCELED'로 업데이트
-	    String sql = " UPDATE ORDERS "
+	    String sql = " UPDATE orders "
 	    			+ " SET status = 'CANCELED' "
 	    			+ " WHERE order_no = ? ";
 	    
@@ -166,7 +166,7 @@ public Order select(int no) {
 	        if (result > 0) {
 	            // 롤백할 포인트 계산
 	            String pointSQL = " SELECT a.price * 0.1 - a.use_point AS rollbackPoint, a.phone "
-	            				+ " FROM ORDERS a, USERS b "
+	            				+ " FROM orders a, USERS b "
 	            				+ " WHERE a.phone = b.phone "
 	            				+ " AND a.status = 'CANCELED' "
 	            				+ " AND a.order_no = ? ";
@@ -210,7 +210,7 @@ public Order select(int no) {
 		List<Order> orderList = new ArrayList<Order>();
 		
 		String sql = " SELECT * "
-					+ " FROM ORDERS "
+					+ " FROM orders "
 					+ " WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD') "
 					+ " AND status != 'CANCELED' ";
 		

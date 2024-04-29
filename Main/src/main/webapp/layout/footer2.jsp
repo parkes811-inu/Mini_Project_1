@@ -77,13 +77,6 @@
 	    console.log("WebSocket 연결 성공");
 	}
 	
-	socket.onmessage = function(event) {
-	    console.log("메시지 수신: " + event.data);
-	    var chatArea = document.getElementById("chat-content");
-	    chatArea.innerHTML += "<div>" + event.data + "</div>";
-	    chatArea.scrollTop = chatArea.scrollHeight;
-	};
-	
 	socket.onclose = function() {
 	    console.log("WebSocket 연결 종료");
 	}

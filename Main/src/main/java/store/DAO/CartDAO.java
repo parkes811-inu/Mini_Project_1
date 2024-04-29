@@ -111,9 +111,9 @@ public class CartDAO extends JDBConnection {
         	// 이미지 패스를 가져오기 위해 테이블 조인
             String sql = "SELECT C.table_no, C.user_id, C.product_name, C.amount,"
             		+ "			 C.price, P.image_path "
-            			+ " FROM cart C, PRODUCT P "
+            			+ " FROM cart C, product P "
             			+ " WHERE table_no = ? "
-            			+ " AND C.PRODUCT_NAME = P.NAME ";
+            			+ " AND C.product_name = P.name ";
 			psmt = con.prepareStatement(sql);
 			psmt.setInt(1, tableNum);
 
@@ -201,8 +201,9 @@ public class CartDAO extends JDBConnection {
 	            int adjustedPrice = "+".equals(operation) ? productPrice : -productPrice;
 	            
 	            // 2. cart 테이블에서 해당 테이블 번호와 제품 이름에 맞는 항목의 수량과 가격 업데이트
-	            String updateQuery = "UPDATE cart SET amount = amount + ?, price = price + ? "
-	                               + "WHERE table_no = ? AND product_name = ? AND amount > 0 AND ROWNUM = 1";
+	            String updateQuery = " UPDATE cart SET amount = amount + ?, price = price + ? "
+	                               + " WHERE table_no = ? AND product_name = ? AND amount > 0 "
+	                               + " LIMIT 1 ";
 	            psmt = con.prepareStatement(updateQuery);
 	            psmt.setInt(1, "+".equals(operation) ? 1 : -1); // 수량 조정
 	            psmt.setInt(2, adjustedPrice); // 가격 조정

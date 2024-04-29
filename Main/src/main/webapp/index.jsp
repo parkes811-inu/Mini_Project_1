@@ -1,67 +1,121 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- 2024-04-03 : 박은서
+메인 메뉴 화면 및 메뉴 클릭 시 모달 팝업 -->
+<%@ page import="java.sql.*" %>
+<%@ page import="store.DAO.ProductDAO" %>
+<%@ page import="store.DTO.Product" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.HashSet"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="layout/header.jsp" %>
+<%@ include file="layout/footer.jsp" %>
+<%@ include file="layout/footer2.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<script>
-		// 웹소켓 객체 생성
-		//var socket = new WebSocket("ws://localhost:9090/Main");
-		var socket = new WebSocket("ws://localhost:9090/Main/chatting");
+   <style>
+     /* 외부 컨테이너에 대한 패딩 */
+    .product-container {
+	    max-height: 500px; /* 최대 높이 설정 */
+	    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 바 생성 */
+	    padding: 20px;
+	}
 
-		// 웹소켓 연결 시 호출 메소드
-		socket.onopen = function() {
-			console.log("WebSocket 연결 성공");
-		} 
-		
-		// 메시지 수신 시 호출 메소드
-		socket.onmessage = function(event) {
-			console.log("메시지 수신: " + event.data);
-			// 서버로부터 수신된 메시지 처리
-			// 예를 들어, 수신된 메시지를 채팅 영역에 표시
-			var chatArea = document.getElementById("chatArea");
-			chatArea.innerHTML += "<div>" + event.data + "</div>";
-			// 채팅 영역 스크롤 맨 아래로 이동
-			chatArea.ScrollTop = chatArea.scrollHeight;
-		};
-		
-		socket.onclose = function() {
-			console.log("WebSocket 연결 종료");
-		}
-		
-		// 메시지를 서버로 전송하기 위한 함수
-		function sendMessage() {
-			var messageInput = document.getElementById("messageInput");
-			var message = messageInput.value;
-			var name = document.getElementById("name").value;
-			
-			if (name == '') {
-				alert('이름을 입력해주세요')
-				return
-			}
-			
-			// 메시지 전송 요청 함수 호출
-			socket.send(name + " : " + message);
-			
-			// 메시지를 전송한 후 입력 필드를 지움
-			messgaeInput.value = "";
-			// 채팅 영역 스크롤 맨 아래 이동
-			var chatArea = document.getElementById("chatArea");
-			chatArea.scrollTop = chatArea.scrollHeight;
-			
-			// 엔터 키 누를 때, sendMessage 함수 호출
-			function handleKeyPress(event) {
-				if (event.KeyCode === 13) {
-					sendMessage();
-				}
-			}
-		}
-	</script>
+    /* 각 제품 항목의 스타일 */
+    .product-item {
+        display: inline-block;
+        width: calc(33.33% - 20px); /* 3개씩 나열되도록 너비 지정 */
+        margin: 10px;
+        padding: 20px; /* 내부 패딩 추가 */
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+	.product-item img {
+	    width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
+	    height: auto; /* 이미지의 높이를 자동으로 조절하여 비율 유지 */
+	    max-height: 200px; /* 최대 높이 제한 */
+	}
+	
+    .product-item h4 {
+        margin-top: 5px;
+    }
+	</style>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>주문 화면</title>
+    <!-- 이정용 : style.css 파일에 모달화면 css를 홍콩반점과 같이 꾸며주세요. -->
+    <link rel="stylesheet" href="static/css/style.css"> 
 </head>
-	<body>
-		<div id="chatArea" style="height: 200px; overflow-y: scroll;"></div>
-		<input type="text" id="name" name="name" placeholder="이름"/> <br>
-		<input type="text" id="messageInput" placeholder="메시지를 입력하세요." onkeypress="handleKeyPress(event)">
-		<button onclick="sendMessage()">보내기</button>
-	</body>
+<body>
+<div class="main-content">
+
+<%
+	//  사용자로부터 받은 tableNum 파라미터 값을 읽어옵니다.
+    String tableNumStr9 = request.getParameter("tableNum");
+    if (tableNumStr9 != null) {
+        int tableNum9 = Integer.parseInt(tableNumStr9);
+        session.setAttribute("tableNum", tableNum9);
+    }
+	
+	ArrayList<Product> productList = new ArrayList<>();
+	String category = "메인";
+	
+	ProductDAO productDao = new ProductDAO(); // ProductDAO 인스턴스 생성
+	try {
+	    productList = productDao.getAllProducts(category); // 모든 제품 정보를 조회
+	} catch(Exception e) {
+	    e.printStackTrace();
+	}
+%>
+<!-- 모달을 여는 버튼 -->
+<div>
+	<c:forEach var="product" items="<%= productList %>">
+		<div class="product-item" id="${ product.productId }" 
+			data-description="${product.description}" data-price="${ product.price }">
+			<input type="hidden" name="count" value="${ product.count }" />
+	   		<img src="<%= request.getContextPath() %>${ product.imagePath }" alt="food_img1">
+			<h4>${ product.name }</h4>
+			<h4>${ product.price } 원</h4>
+		</div>
+   	</c:forEach>
+</div>
+
+<!-- The Modal -->
+	<div id="myModal" class="modal">
+	
+	  <!-- Modal content -->
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <span class="closeBtn">&times;</span>
+	    </div>
+	    <div class="modal-body">
+	    <div class="menu">
+	    	<div id="detail-img-box">
+	    		<!-- 주석 처리 해도 이미지 나옴 -->
+	    		<!--  <img src="< % = request.getContextPath() %>${ product.imagePath }" alt="food_img1" class="room_img">-->
+	    	</div>
+            <h4 id="product-detail-name"></h4>
+            <h4 id="product-detail-price"></h4>
+            <h6 id="product-dsecription"></h6>
+            <button type="button" id="detail-minus">-</button>
+            <input type="text" name="" value="1" id="detail-count" onkeydown="return false;">
+            <button type="button" id="detail-plus">+</button>
+            
+	    </div>
+	    </div>
+	    	<div class="modal-footer">
+			<div class="pop-btn confirm" id="cancel">취소하기</div>
+			<div class="pop-btn confirm" id="confirm">추가하기</div>
+			</div>
+	  </div>
+	</div>
+<jsp:include page="/static/js/script.jsp" />
+</div>
+
+</body>
 </html>
+    

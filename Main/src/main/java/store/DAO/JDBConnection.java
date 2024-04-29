@@ -22,7 +22,8 @@ public class JDBConnection {
 		// Oracle
 		try {
 			// ojdbc8.jar 드라이버의 클래스를 로드한다.
-			Class.forName("oracle.jdbc.OracleDriver");		 
+//			Class.forName("oracle.jdbc.OracleDriver");		 
+			Class.forName("com.mysql.jdbc.Driver");		 
 			
 			// DB에 연결
 			// jdbc:oracle:thin  		- JDBC 드라이버 타입 (thin 타입)
@@ -32,9 +33,14 @@ public class JDBConnection {
 			// String url ="jdbc:oracle:thin:@localhost:1521:orcl"; // 12c이상
 			
 			// store라는 id로 새로운 데이터베이스 연결
-			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-			String id = "store";
-			String pw = "123456";
+//			String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+//			String id = "store";
+//			String pw = "123456";
+			
+//			String url = "jdbc:mysql://127.0.0.1:3306/msa5t5?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false";
+			String url = "jdbc:mysql://203.245.44.103:3306/msa5t5?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false";
+			String id = "msa5t5";
+			String pw = "msa51004!";
 			
 			// 자바 프로그램에서 JDBC 드라이버를 연결시켜주는 클래스
 			// getConnection() 메소드로 DB에 연결 요청하고 생성된 Connection 객체를 반환받는다.

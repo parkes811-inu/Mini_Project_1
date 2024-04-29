@@ -15,7 +15,7 @@ public class OwnerDAO extends JDBConnection {
 	 */
 	public Owner login(Owner owner) {
 		String sql = " SELECT * "
-				   + " FROM OWNER "
+				   + " FROM owner "
 				   + " WHERE ID = ? AND PW = ? ";
 		
 		try {

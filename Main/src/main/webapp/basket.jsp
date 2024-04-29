@@ -97,7 +97,7 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     // 서버로부터 성공적인 응답을 받았을 때의 처리
-                    alert("수량이 업데이트되었습니다.");
+                    // alert("수량이 업데이트되었습니다.");
                     window.location.reload(); // 현재 페이지 새로고침
                 },
                 error: function(xhr, status, error) {

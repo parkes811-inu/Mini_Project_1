@@ -51,6 +51,8 @@
     <link rel="stylesheet" href="static/css/style.css"> 
 </head>
 <body>
+<div class="main-content">
+
 <%
 	//  사용자로부터 받은 tableNum 파라미터 값을 읽어옵니다.
     String tableNumStr9 = request.getParameter("tableNum");
@@ -112,6 +114,7 @@
 	  </div>
 	</div>
 <jsp:include page="/static/js/script.jsp" />
+</div>
 
 </body>
 </html>

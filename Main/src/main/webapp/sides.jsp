@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="static/css/style.css"> 
 </head>
 <body>
+<div class="main-content">
 <%
 	ArrayList<Product> productList = new ArrayList<>();
 	String category = "사이드";
@@ -102,7 +103,7 @@
 	  </div>
 	</div>
 <jsp:include page="/static/js/script.jsp" />
-
+</div>
 </body>
 </html>
     

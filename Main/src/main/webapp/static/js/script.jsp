@@ -115,7 +115,7 @@
 		            url: "addToCartServlet.jsp", // 장바구니에 추가하는 서블릿 URL
 		            data: data,
 		            success: function(response) {
-		                alert('추가가 완료되었습니다.');
+		                //alert('추가가 완료되었습니다.');
 		                
 		                $('#myModal').hide();
 		                window.location.reload("/layout/footer2.jsp");
