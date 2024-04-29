@@ -13,5 +13,12 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Tomcat 9.0/lib/servlet-api.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://javaee.github.io/javaee-spec/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/tj-bu-706-25/eclipse/jee-2023-12/eclipse/configuration/org.eclipse.osgi/1001/0/.cp/libs/jakarta.websocket-api-2.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tj-bu-706-25/.p2/pool/plugins/javax.websocket-api_1.1.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

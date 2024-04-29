@@ -35,6 +35,7 @@ if (session != null && session.getAttribute("loginId") != null) {
 <link href="static/css/sign-in.css" rel="stylesheet">
 <link href="static/css/headers.css" rel="stylesheet">
 <link href="static/css/grid.css" rel="stylesheet">
+<link rel="stylesheet" href="static/css/chat.css">
 <style>
 .bd-placeholder-img {
 	font-size: 1.125rem;
@@ -574,7 +575,82 @@ html, body, .container, .row, .col-md-4 {
 			xhr.send(params);
 		}
 	</script>
-
+	<div class="order-summary">
+   
+      <button id="chatButton" class="chat-button">채팅</button>
+      
+      <div id="chatWindow" class="chat-window" style="display: none;">
+         <div class="chat-header">
+              <span>채팅 창</span>
+          </div>
+          <!-- 채팅 내용이 여기 들어갑니다 -->
+          <div id="chat-content" class="chat-content">
+              <!-- 메세지들 -->
+          </div>
+          <!-- 메세지 입력 -->
+          <div class="chat-input">
+              <input type="text" id="messageInput" placeholder="메세지 입력" onkeypress="handleKeyPress(event)">
+              <button onclick="sendMessage()">전송</button>
+              <button onclick="toggleChatWindow()">닫기</button>
+          </div>
+         
+      </div>
+    </div>
+	<script>
+	function toggleChatWindow() {
+	    var chatWindow = document.getElementById("chatWindow");
+	    if (chatWindow.style.display === "none") {
+	        chatWindow.style.display = "block";
+	    } else {
+	        chatWindow.style.display = "none";
+	    }
+	}
+	
+	document.getElementById("chatButton").onclick = toggleChatWindow;
+	
+	var socket = new WebSocket("ws://localhost:9090/Main/chatting");
+	
+	socket.onopen = function() {
+	    console.log("WebSocket 연결 성공");
+	}
+	
+	// 페이지 로딩 시 로컬 스토리지에서 채팅 기록 불러오기
+	document.addEventListener("DOMContentLoaded", function() {
+	    var chatArea = document.getElementById("chat-content");
+	    var chatHistory = localStorage.getItem("chatHistory");
+	    if (chatHistory) {
+	        chatArea.innerHTML = chatHistory;
+	    }
+	});
+	
+	socket.onmessage = function(event) {
+	    console.log("메시지 수신: " + event.data);
+	    var chatArea = document.getElementById("chat-content");
+	    chatArea.innerHTML += "<div>" + event.data + "</div>";
+	    chatArea.scrollTop = chatArea.scrollHeight;
+	};
+	
+	socket.onclose = function() {
+	    console.log("WebSocket 연결 종료");
+	}
+	
+	function sendMessage() {
+	    var messageInput = document.getElementById("messageInput");
+	    var message = messageInput.value;
+        var tableNum = "사장님"; // JSP Expression to get server-side variable
+	    
+	    socket.send(tableNum + " : " + message);
+	    messageInput.value = "";
+	    var chatArea = document.getElementById("chat-content");
+	    chatArea.scrollTop = chatArea.scrollHeight;
+	}
+	
+	function handleKeyPress(event) {
+	    if (event.keyCode === 13) {
+	        sendMessage();
+	    }
+	}
+	</script>
 	<script src="static/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

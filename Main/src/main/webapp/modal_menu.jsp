@@ -20,8 +20,10 @@
    <style>
      /* 외부 컨테이너에 대한 패딩 */
     .product-container {
-        padding: 20px;
-    }
+	    max-height: 500px; /* 최대 높이 설정 */
+	    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 바 생성 */
+	    padding: 20px;
+	}
 
     /* 각 제품 항목의 스타일 */
     .product-item {
@@ -33,12 +35,12 @@
         text-align: center;
     }
 
-    .product-item img {
-    width: auto; /* 이미지의 너비를 100px로 설정합니다. */
-    max-width: 90%;
-    height: auto; /* 이미지의 높이를 100px로 설정합니다. */
-    max-height: 90%;    }
-
+	.product-item img {
+	    width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
+	    height: auto; /* 이미지의 높이를 자동으로 조절하여 비율 유지 */
+	    max-height: 200px; /* 최대 높이 제한 */
+	}
+	
     .product-item h4 {
         margin-top: 5px;
     }
