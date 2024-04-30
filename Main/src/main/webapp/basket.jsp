@@ -53,7 +53,8 @@
        // uniqueCartList를 반복하며 각 항목을 표시
   %>
 	  <div class="menu-item" data-tableNum="<%= cartItem.getTableNo()%>">
-	    <img src="<%=request.getContextPath()%>/<%= cartItem.getImagePath() %>" alt="<%= cartItem.getProductName() %>" />
+   		<img src="<%= request.getContextPath() %><%= cartItem.getImagePath() %>" alt="<%= cartItem.getProductName() %>">
+<%-- 	    <img src="<%=request.getContextPath()%>/<%= cartItem.getImagePath() %>" alt="<%= cartItem.getProductName() %>" /> --%>
 	    <div class="menu-description">
 	      <h3><%= cartItem.getProductName() %></h3>
 	      <p><%= cartItem.getAmount() %>개</p>

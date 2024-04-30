@@ -24,7 +24,7 @@
         tableNum6 = 1; // 예시 기본값
     }
     
-   // tableNo는 application범위로 지정해야됨.
+   // tableNo는 application범위로 지정해야됨. 
    int tableNo = tableNum6; 
    CartDAO cartDao = new CartDAO();
    Cart cart = new Cart();
@@ -71,7 +71,7 @@
 	
 	document.getElementById("chatButton").onclick = toggleChatWindow;
 	
-	var socket = new WebSocket("ws://localhost:9090/Main/chatting");
+	var socket = new WebSocket("ws://localhost:8905/Main/chatting");
 	
 	socket.onopen = function() {
 	    console.log("WebSocket 연결 성공");

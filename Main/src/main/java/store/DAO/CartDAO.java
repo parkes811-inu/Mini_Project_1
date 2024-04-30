@@ -4,7 +4,6 @@
  * */
 package store.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import store.DTO.Cart;
-import store.DTO.Product;
-import store.DTO.Users;
 
 public class CartDAO extends JDBConnection {
 
@@ -265,7 +262,7 @@ public class CartDAO extends JDBConnection {
 	        while (rs.next()) {
 	            // 조회된 각 항목을 orders 테이블에 삽입
 	            String sqlInsert = "INSERT INTO orders (TABLE_NO, MENU_NAME, AMOUNT, PRICE, ORDER_DATE, STATUS, USE_POINT, PAYMENT, PHONE, CLASSIFICATION) "
-	            					+ "VALUES (?, ?, ?, ?, SYSDATE, 'PAY OK', ?, ?, ?, ?)";
+	            					+ "VALUES (?, ?, ?, ?, NOW(), 'PAY OK', ?, ?, ?, ?)";
 	            psmtInsert = con.prepareStatement(sqlInsert);
 	            psmtInsert.setInt(1, tableNo);
 	            psmtInsert.setString(2, rs.getString("product_name"));

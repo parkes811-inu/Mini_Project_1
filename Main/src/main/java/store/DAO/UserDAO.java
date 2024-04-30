@@ -19,7 +19,7 @@ public class UserDAO extends JDBConnection {
 		// 전화번호, 이름만 users 테이블에 저장
 		// join_date는 회원 가입 당시 일자를 sysdate로 추가
 		String sql = " INSERT INTO users ( phone, point, join_date ) "
-				   + " VALUES(?, ?, sysdate) ";
+				   + " VALUES(?, ?, now()) ";
 		
 		try {
 			psmt = con.prepareStatement(sql);			// 쿼리 실행 객체 생성

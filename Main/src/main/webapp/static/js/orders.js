@@ -58,7 +58,7 @@ document.getElementById('cardButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                          	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -91,7 +91,7 @@ document.getElementById('cardButton').addEventListener('click', function() {
 					};
 					
                     // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                  	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                  	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
 					xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                 	}
                 };
@@ -158,7 +158,7 @@ document.getElementById('cashButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                          	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -189,7 +189,7 @@ document.getElementById('cashButton').addEventListener('click', function() {
 					};
 					
                     // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                  	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                  	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
 					xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                 	}
                 };
@@ -255,7 +255,7 @@ document.getElementById('pointButton').addEventListener('click', function() {
 							 // -> 포인트 추가가 완료되었습니다. 얼럿 후 메인 페이지 이동
 							console.log(this.responseInt);
                             alert('새로운 번호로 포인트가 추가되었습니다.');
-                          	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                          	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
                           	// completePayment.jsp에 전송되는 데이터.
 							xhrInsert.send("phoneNum=" + phoneNumValue + "&tableNo=" + tableNo + "&point=" + 0 + "&payment=" + payment + "&classification=" + customerStatus);
                         }
@@ -297,7 +297,7 @@ document.getElementById('pointButton').addEventListener('click', function() {
 								}
 								
 	                            // -> 주문이 완료되었습니다. 얼럿 후 메인 페이지 이동
-                              	window.location.href = 'modal_menu.jsp?tableNum' + tableNo;
+                              	window.location.href = 'modal_menu.jsp?tableNum=' + tableNo;
 	                        }
 	                    };
 	                    xhrUpdate.send("phoneNum=" + phoneNumValue + "&pointsToUse=" + pointsToUse);

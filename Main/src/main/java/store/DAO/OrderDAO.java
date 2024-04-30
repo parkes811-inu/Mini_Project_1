@@ -101,8 +101,8 @@ public Order select(int no) {
 	public int insert(Order order) {
 		int result = 0;		// 결과 : 적용된 데이터 건수
 		
-		String sql = " INSERT INTO orders (ORDER_NO, TABLE_NO, MENU_NAME, AMOUNT, PRICE, sysdate, STATUS, PHONE) "
-				   + " VALUES(SEQ_ORDER.NEXTVAL, ?, ?, ?, ?, ?, ?, ? ) ";
+		String sql = " INSERT INTO orders (TABLE_NO, MENU_NAME, AMOUNT, PRICE, NOW(), STATUS, PHONE) "
+				   + " VALUES( ?, ?, ?, ?, ?, ?, ? ) ";
 		
 		try {
 			psmt = con.prepareStatement(sql);			// 쿼리 실행 객체 생성
@@ -209,10 +209,14 @@ public Order select(int no) {
 		
 		List<Order> orderList = new ArrayList<Order>();
 		
+//		String sql = " SELECT * "
+//					+ " FROM orders "
+//					+ " WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD') "
+//					+ " AND status != 'CANCELED' ";
 		String sql = " SELECT * "
-					+ " FROM orders "
-					+ " WHERE TRUNC(ORDER_DATE) = TO_DATE(?, 'YYYY-MM-DD') "
-					+ " AND status != 'CANCELED' ";
+	               + " FROM orders "
+	               + " WHERE DATE(order_date) = STR_TO_DATE(?, '%Y-%m-%d') "
+	               + " AND status != 'CANCELED' ";
 		
 		try {
 			psmt = con.prepareStatement(sql);
